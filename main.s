@@ -19,6 +19,7 @@ StartProg
     sta _tracker_next_stop
     lda #0
     sta _tracker_bar_index
+    sta _tracker_bar_step_index
 
     jsr clearSound
     jsr setupTrackerInterrupt

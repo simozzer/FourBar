@@ -2,8 +2,10 @@ setupTrackerInterrupt
 
     lda #0
     sta _tracker_step_index;
+
+    ; set the default number of intervals before moving to next step
     lda #TRACKER_STEP_LENGTH
-    sta _tracker_step_cycles_remaining;
+    sta _tracker_step_cycles_remaining;    
     sta _tracker_step_length;
   
     sei
@@ -196,6 +198,7 @@ trackerInterrupt
         
         jsr MUSIC_ATMOS
 
+    ; decrement the interval count to see if we've reached the next step
     :countDown
         dec _tracker_step_cycles_remaining
         lda _tracker_step_cycles_remaining
@@ -207,17 +210,42 @@ trackerInterrupt
         lda _tracker_step_length
         sta _tracker_step_cycles_remaining
         inc _tracker_step_index;
-        lda _tracker_step_index;
+        inc _tracker_bar_step_index;
+        lda _tracker_bar_step_index;
         clc
-        cmp _tracker_last_step
+        cmp #16 ; check if we've reached the end of the bar
         beq resetSequence
         jmp continue
 
     resetSequence
-        lda #0
+        lda _tracker_play_mode
+        cmp #TRACKER_PLAY_MODE_BAR
+        beq nextBar
+
+        ; we're in song mode
+        lda _tracker_step_index
+        cmp #64
+        bne continue
+        lda #0 ; go to beginning of song
         sta _tracker_step_index
         lda _tracker_step_length
         sta _tracker_step_cycles_remaining
+        lda #0
+        sta _tracker_bar_step_index
+
+        jmp continue
+
+    nextBar
+        ldy _tracker_bar_index
+        lda trackerBarStartLookup,Y
+        sta _tracker_step_index
+        lda _tracker_step_length
+        sta _tracker_step_cycles_remaining
+        lda #0
+        sta _tracker_bar_step_index
+
+
+
 continue
 
     jsr restoreSoundParams

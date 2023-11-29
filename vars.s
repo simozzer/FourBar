@@ -45,6 +45,7 @@ _tracker_last_step .dsb 1
 _tracker_next_start .dsb 1
 _tracker_next_stop .dsb 1
 _tracker_bar_index .dsb 1
+_tracker_bar_step_index .dsb 1
 
 _tracker_selected_col_index .dsb 1
 _tracker_selected_row_index .dsb 1

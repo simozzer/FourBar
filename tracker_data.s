@@ -7,9 +7,9 @@ numbersToDisplay
 
 
 trackerScreenData
-.byt PAPER_WHITE, INK_BLACK,  " BAR:1    C1         C2          C3   "
+.byt PAPER_WHITE, INK_BLACK,  " BAR:1                                "
+.byt PAPER_WHITE, INK_BLACK,  " CHANNEL 1   CHANNEL 2   CHANNEL 3    "
 .byt PAPER_WHITE, INK_BLACK,  " NOT OCT VOL NOT OCT VOL NOT OCT VOL  "
-.byt PAPER_WHITE, INK_BLACK,  "++++++++++++++++++++++++++++++++++++++"
 .byt PAPER_BLACK, INK_BLACK,  "                                      "
 .byt PAPER_BLACK, INK_GREEN,  ">                                    <"
 .byt PAPER_BLACK, INK_BLUE,   "|                                     "
