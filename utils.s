@@ -100,39 +100,6 @@ bigDelay
 
 
 
-; >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-;// Taken from Kong source code 
-;// Calculate some RANDOM values
-;// Not accurate at all, but who cares ?
-;// For what I need it's enough.
-; ------------------------------------------------------------------------------
-_GetRand
-	lda rand_high
-	sta b_tmp1
-	lda rand_low
-	asl 
-	rol b_tmp1
-	asl 
-	rol b_tmp1
-	asl
-	rol b_tmp1
-	asl
-	rol b_tmp1
-	clc
-	adc rand_low
-	pha
-	lda b_tmp1
-	adc rand_high
-	sta rand_high
-	pla
-	adc #$11
-	sta rand_low
-	lda rand_high
-	adc #$36
-	sta rand_high
-	rts
-; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
 
 ; >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;// Copy memory (could be further opitimised using comments from dhbug)

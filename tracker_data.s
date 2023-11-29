@@ -27,13 +27,13 @@ trackerScreenData
 .byt PAPER_BLACK, INK_BLUE,   "|                                     "
 .byt PAPER_BLACK, INK_BLUE,   "|                                     "
 .byt PAPER_WHITE, INK_BLUE,   " Arrows to navigate. +/- Change value."
-.byt PAPER_WHITE, INK_BLUE,   " Del Delete. (Q)uit.                  "
 .byt PAPER_WHITE, INK_BLUE,   " Speed: (S)lower, (F)aster.           "
 .byt PAPER_WHITE, INK_BLUE,   " Select Bar: 1,2,3,4,5,6,7,8          "
-.byt PAPER_WHITE, INK_BLUE ,  " Line: (C)opy, V Paste                "
-.byt PAPER_WHITE, INK_BLUE,   " Note:Z Copy, X Paste                 "
+.byt PAPER_WHITE, INK_BLUE,   " Line: (C)opy, V Paste, (D)elete      "
+.byt PAPER_WHITE, INK_BLUE,   " Note: Z Copy, X Paste, (Del)ete      "
 .byt PAPER_WHITE, INK_BLUE,   "                                      "
-.byt PAPER_WHITE, INK_BLACK,  " Toggle song/pattern: B               "
+.byt PAPER_WHITE, INK_BLUE,   "                                      "
+.byt PAPER_WHITE, INK_BLUE,   " (Q)uit.                              "
 
 trackerScreenDataLo
     .byt <trackerScreenData + 0,<trackerScreenData + 40,<trackerScreenData + 80,<trackerScreenData + 120,<trackerScreenData + 160
@@ -289,9 +289,6 @@ trackerMusicDataHi
 
 trackerAttributeColumns
 .byt 3,7,10,15,19,22,27,31,34
-
-trackerAttributeColWidth
-.byt 3,2,3,3,2,3
 
 trackerBarStartLookup
 .byt 0,16,32,48,64,80,96,112,128

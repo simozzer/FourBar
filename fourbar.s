@@ -126,8 +126,14 @@ runTracker
 
     checkF
     cpx #KEY_F
-    bne checkOne
+    bne checkD
     jsr speedUp
+    jmp refreshTrackerScreen
+
+    checkD
+    cpx #KEY_D
+    bne checkOne
+    jsr deleteLine
     jmp refreshTrackerScreen
 
     checkOne
@@ -304,6 +310,27 @@ processPaste
     iny
     cpy #06
     bne pasteLoop
+    rts
+.)
+
+deleteLine
+.(
+    clc
+    lda _tracker_selected_row_index
+    adc _first_visible_tracker_step_line
+    tay
+    lda trackerMusicDataLo,Y
+    sta deleteLoop+1
+    lda trackerMusicDataHi,y
+    sta deleteLoop+2
+    clc
+    ldy #00
+    lda #00
+    :deleteLoop
+    sta $ffff,Y
+    iny
+    cpy #06
+    bne deleteLoop
     rts
 .)
 

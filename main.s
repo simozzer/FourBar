@@ -14,10 +14,6 @@ StartProg
     lda #16
     sta _tracker_last_step
     lda #0
-    sta _tracker_next_start 
-    lda #16
-    sta _tracker_next_stop
-    lda #0
     sta _tracker_bar_index
     sta _tracker_bar_step_index
 
