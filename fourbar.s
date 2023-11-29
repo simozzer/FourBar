@@ -196,12 +196,24 @@ runTracker
 
     checkEight
     cpx #KEY_8
-    bne loopAgain
+    bne checkZ
     lda #112
     sta _first_visible_tracker_step_line
     lda #07
     sta _tracker_bar_index 
     jmp refreshTrackerScreen
+
+    checkZ
+    cpx #KEY_Z
+    bne checkX
+    jsr processCopyNote
+    jmp refreshTrackerScreen
+
+    checkX
+    cpx #KEY_X
+    bne loopAgain
+    jsr processPasteNote
+    jmp refreshTrackerScreen    
     
 /*
     checkB
@@ -295,7 +307,281 @@ processPaste
     rts
 .)
 
+processCopyNote
+.(
+    clc
+    lda _tracker_selected_row_index
+    adc _first_visible_tracker_step_line
+    tay
+    lda trackerMusicDataLo,Y
+    sta _copy_note_lo
+    lda trackerMusicDataHi,y
+    sta _copy_note_hi
 
+    lda _tracker_selected_col_index
+    cmp #TRACKER_COL_INDEX_NOTE_CH1
+    bne nextCheck0
+
+    ldy #0
+    lda (_copy_note),Y
+    sta trackerNoteCopyByte1
+    iny 
+    lda (_copy_note),Y
+    sta trackerNoteCopyByte2
+
+    rts
+nextCheck0
+    cmp #TRACKER_COL_INDEX_OCT_CH1
+    bne nextCheck2
+    ldy #0
+    lda (_copy_note),Y
+    sta trackerNoteCopyByte1
+    iny 
+    lda (_copy_note),Y
+    sta trackerNoteCopyByte2
+        
+    rts
+
+
+
+nextCheck2
+    cmp #TRACKER_COL_INDEX_VOL_CH1
+    bne nextCheck3
+    ldy #0
+    lda (_copy_note),Y
+    sta trackerNoteCopyByte1
+    iny 
+    lda (_copy_note),Y
+    sta trackerNoteCopyByte2
+
+    rts
+
+
+
+nextCheck3
+    cmp #TRACKER_COL_INDEX_NOTE_CH2
+    bne nextCheck4
+
+    ldy #2
+    lda (_copy_note),Y
+    sta trackerNoteCopyByte1
+    iny 
+    lda (_copy_note),Y
+    sta trackerNoteCopyByte2
+
+
+    rts
+
+nextCheck4    
+    cmp #TRACKER_COL_INDEX_OCT_CH2
+    bne nextCheck6
+
+    ldy #2
+    lda (_copy_note),Y
+    sta trackerNoteCopyByte1
+    iny 
+    lda (_copy_note),Y
+    sta trackerNoteCopyByte2
+
+    rts
+
+
+
+nextCheck6
+    cmp #TRACKER_COL_INDEX_VOL_CH2
+    bne nextCheck7
+
+    ldy #2
+    lda (_copy_note),Y
+    sta trackerNoteCopyByte1
+    iny 
+    lda (_copy_note),Y
+    sta trackerNoteCopyByte2
+
+
+    rts
+
+nextCheck7
+    cmp  #TRACKER_COL_INDEX_NOTE_CH3
+    bne nextCheck8
+
+    ldy #4
+    lda (_copy_note),Y
+    sta trackerNoteCopyByte1
+    iny 
+    lda (_copy_note),Y
+    sta trackerNoteCopyByte2
+
+    rts
+
+nextCheck8
+    cmp #TRACKER_COL_INDEX_OCT_CH3
+    bne nextCheck9
+
+    ldy #4
+    lda (_copy_note),Y
+    sta trackerNoteCopyByte1
+    iny 
+    lda (_copy_note),Y
+    sta trackerNoteCopyByte2
+
+
+    rts
+
+nextCheck9  
+    cmp #TRACKER_COL_INDEX_VOL_CH3
+    bne done
+
+    ldy #4
+    lda (_copy_note),Y
+    sta trackerNoteCopyByte1
+    iny 
+    lda (_copy_note),Y
+    sta trackerNoteCopyByte2
+
+    rts
+
+done
+    rts
+.)
+
+processPasteNote
+.(
+ clc
+    lda _tracker_selected_row_index
+    adc _first_visible_tracker_step_line
+    tay
+    lda trackerMusicDataLo,Y
+    sta _copy_note_lo
+    lda trackerMusicDataHi,y
+    sta _copy_note_hi
+
+    lda _tracker_selected_col_index
+    cmp #TRACKER_COL_INDEX_NOTE_CH1
+    bne nextCheck0
+
+    ldy #0
+    lda trackerNoteCopyByte1
+    sta (_copy_note),Y
+    iny 
+    lda trackerNoteCopyByte2
+    sta (_copy_note),Y
+
+    rts
+nextCheck0
+    cmp #TRACKER_COL_INDEX_OCT_CH1
+    bne nextCheck2
+    ldy #0
+    lda trackerNoteCopyByte1
+    sta (_copy_note),Y
+    iny 
+    lda trackerNoteCopyByte2
+    sta (_copy_note),Y
+        
+    rts
+
+
+
+nextCheck2
+    cmp #TRACKER_COL_INDEX_VOL_CH1
+    bne nextCheck3
+    ldy #0
+    lda trackerNoteCopyByte1
+    sta (_copy_note),Y
+    iny 
+    lda trackerNoteCopyByte2
+    sta (_copy_note),Y
+
+    rts
+
+
+
+nextCheck3
+    cmp #TRACKER_COL_INDEX_NOTE_CH2
+    bne nextCheck4
+
+    ldy #2
+    lda trackerNoteCopyByte1
+    sta (_copy_note),Y
+    iny 
+    lda trackerNoteCopyByte2
+    sta (_copy_note),Y
+
+
+    rts
+
+nextCheck4    
+    cmp #TRACKER_COL_INDEX_OCT_CH2
+    bne nextCheck6
+
+    ldy #2
+    lda trackerNoteCopyByte1
+    sta (_copy_note),Y
+    iny 
+    lda trackerNoteCopyByte2
+    sta (_copy_note),Y
+
+    rts
+
+
+
+nextCheck6
+    cmp #TRACKER_COL_INDEX_VOL_CH2
+    bne nextCheck7
+
+    ldy #2
+    lda trackerNoteCopyByte1
+    sta (_copy_note),Y
+    iny 
+    lda trackerNoteCopyByte2
+    sta (_copy_note),Y
+
+
+    rts
+
+nextCheck7
+    cmp  #TRACKER_COL_INDEX_NOTE_CH3
+    bne nextCheck8
+
+    ldy #4
+    lda trackerNoteCopyByte1
+    sta (_copy_note),Y
+    iny 
+    lda trackerNoteCopyByte2
+    sta (_copy_note),Y
+
+    rts
+
+nextCheck8
+    cmp #TRACKER_COL_INDEX_OCT_CH3
+    bne nextCheck9
+
+    ldy #4
+    lda trackerNoteCopyByte1
+    sta (_copy_note),Y
+    iny 
+    lda trackerNoteCopyByte2
+    sta (_copy_note),Y
+
+
+    rts
+
+nextCheck9  
+    cmp #TRACKER_COL_INDEX_VOL_CH3
+    bne done
+
+    ldy #4
+    lda trackerNoteCopyByte1
+    sta (_copy_note),Y
+    iny 
+    lda trackerNoteCopyByte2
+    sta (_copy_note),Y
+
+    rts
+
+done
+    rts
+.)
 
 ; >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ; processPlus: 

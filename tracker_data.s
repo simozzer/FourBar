@@ -31,7 +31,7 @@ trackerScreenData
 .byt PAPER_WHITE, INK_BLUE,   " Speed: (S)lower, (F)aster.           "
 .byt PAPER_WHITE, INK_BLUE,   " Select Bar: 1,2,3,4,5,6,7,8          "
 .byt PAPER_WHITE, INK_BLUE ,  " Line: (C)opy, V Paste                "
-.byt PAPER_WHITE, INK_BLUE,   "                                      "
+.byt PAPER_WHITE, INK_BLUE,   " Note:Z Copy, X Paste                 "
 .byt PAPER_WHITE, INK_BLUE,   "                                      "
 .byt PAPER_WHITE, INK_BLACK,  " Toggle song/pattern: B               "
 
@@ -195,6 +195,12 @@ trackerMusicData
 
 trackerCopyBuffer
 .byt $00,$00,$00,$00,$00,$00
+
+trackerNoteCopyByte1 .byt $00
+trackerNoteCopyByte2 .byt $00
+
+copyNoteDataLo .byt 00
+copyNoteDataHi .byt 00
 
 trackerMusicDataLo
     ;bar 0
