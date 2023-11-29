@@ -114,18 +114,18 @@ runTracker
 
     checkPaste
     cpx #KEY_V
-    bne checkFive
+    bne checkS
     jsr processPaste
     jmp refreshTrackerScreen
 
-    checkFive
-    cpx #KEY_5
-    bne checkSix
+    checkS
+    cpx #KEY_S
+    bne checkF
     jsr slowDown
     jmp refreshTrackerScreen
 
-    checkSix
-    cpx #KEY_6
+    checkF
+    cpx #KEY_F
     bne checkOne
     jsr speedUp
     jmp refreshTrackerScreen
@@ -160,15 +160,49 @@ runTracker
 
     checkFour
     cpx #KEY_4
-    bne loopAgain
+    bne checkFive
     lda #48
     sta _first_visible_tracker_step_line
     lda #03
-    sta _tracker_bar_index        
-    
+    sta _tracker_bar_index
+    jmp refreshTrackerScreen     
 
+    checkFive
+    cpx #KEY_5
+    bne checkSix
+    lda #64
+    sta _first_visible_tracker_step_line
+    lda #04
+    sta _tracker_bar_index  
+    jmp refreshTrackerScreen 
+
+    checkSix  
+    cpx #KEY_6
+    bne checkSeven
+    lda #80
+    sta _first_visible_tracker_step_line
+    lda #05
+    sta _tracker_bar_index  
+    jmp refreshTrackerScreen   
+
+    checkSeven
+    cpx #KEY_7
+    bne checkEight
+    lda #96
+    sta _first_visible_tracker_step_line
+    lda #06
+    sta _tracker_bar_index  
+    jmp refreshTrackerScreen 
+
+    checkEight
+    cpx #KEY_8
+    bne loopAgain
+    lda #112
+    sta _first_visible_tracker_step_line
+    lda #07
+    sta _tracker_bar_index 
     jmp refreshTrackerScreen
-
+    
 /*
     checkB
     cpy #KEY_B

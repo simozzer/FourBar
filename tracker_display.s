@@ -276,7 +276,7 @@ printTrackerScreen
     cpy #27
     bne loopy
 
-    lda #04
+    lda #03
     sta _tracker_screen_line
     lda _first_visible_tracker_step_line
     sta _tracker_step_line
@@ -286,7 +286,7 @@ printTrackerScreen
 
     ldy _tracker_screen_line
     iny
-    cpy #20
+    cpy #19
     beq screenPlotted
     inc _tracker_screen_line
     inc _tracker_step_line
@@ -295,7 +295,7 @@ printTrackerScreen
     screenPlotted 
     // Highlight selected cell
     lda _tracker_selected_row_index
-    adc #3
+    adc #2
     tay 
     lda ScreenLineLookupLo,Y
     sta _copy_mem_dest_lo
