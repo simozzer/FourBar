@@ -1,6 +1,6 @@
 // implementation of 'MUSIC' and 'SOUND' without need to call ROM
 // basically just a trimmed down copy of the Atmos ROM routines,
-// with the validation removed (for speed).
+// with some validation removed (for speed).
 
 
 
@@ -35,6 +35,43 @@ writeXToA8912
     RTS
 .)
 
+independentPlay
+.(
+    LDA $02E3 ;PLAY
+    ASL ;Combine the tone and sound 
+    ASL ;channels into a single byte. 
+    ASL ;Invert the result and send it 
+    ORA $02E1 ;to the mixer register in the 
+    EOR #$3F ;sound chip. 
+    TAX 
+    LDA #$07 
+    JSR writeXToA8912 
+    CLC 
+    LDA $02E7 ;Double the duration given in 
+    ASL ;the command. 
+    STA $02E7 
+    LDA $02E8 
+    ROL 
+    STA $02E8 
+    LDA #$0B 
+    LDX $02E7 ;Write low byte of envelope 
+    JSR writeXToA8912 ;period to 8912. 
+    LDA #$0C 
+    LDX $02E8 ;Write high byte of envelope
+    JSR writeXToA8912 ;period to 8912. 
+    LDA $02E5 
+    AND #$07 
+    TAY 
+    LDA envelopeData,Y ;Look up envelope pattern 
+    TAX ;using table below. 
+    LDA #$0D 
+    JSR writeXToA8912
+    RTS
+.)
+
+envelopeData
+.byt $00,$00,$04,$08,$0A,$0B,$0C,$0D
+
 
 independentSound
 .(
@@ -43,7 +80,7 @@ independentSound
     BNE channelANotUsed ;not being used. 
     LDA #$00 ;Write the tone period for 
     LDX $02E3 ;channel A to the sound chip
-    JSR $F590 ;Write low byte of period. 
+    JSR writeXToA8912; $F590 ;Write low byte of period. 
     LDA #$01 
     LDX $02E4 
     JSR writeXToA8912; $F590 ;Write high byte of period. 

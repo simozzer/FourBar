@@ -329,7 +329,7 @@ jsr WipeParams
     lda #100
     sta PARAMS_7
     ; call play
-    JSR $FBd0
+    JSR independentPlay
 
     rts
 .)
