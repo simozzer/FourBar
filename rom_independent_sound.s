@@ -15,7 +15,7 @@ independentSound
     JSR $F590 ;Write high byte of period. 
     loadAmplitudeChannelA; $FB57 
     LDA $02E5 ;Load amplitude and keep it in 
-    AND #$0F the ;range 0-15. If amplitude 
+    AND #$0F ;the range 0-15. If amplitude 
     BNE useChannelAEnvelope ;is zero then use envelope 
     LDX #$10 ;control. 
     BNE skipChannelAEnvelope;$FB63
@@ -101,7 +101,7 @@ independentMusic
     ROR $02E3 
     JMP decY
 jumpToSound
-    JMP $FB40 ;Goto Sound command. 
+    JMP independentSound ;Goto Sound command. 
     INC $02E0 
     RTS 
 .)
