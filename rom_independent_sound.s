@@ -3,7 +3,41 @@
 // with the validation removed (for speed).
 
 
+
+writeXToA8912
+.(
+    PHP ;WRITE X TO REGISTER A 0F 8912.
+    SEI 
+    STA $030F ;Send A to port A of 6522. 
+    TAY 
+    TXA 
+    CPY #$07 ;If writing to register 7, set 
+    BNE skipSetToOutput; $F59D ;1/0 port to output. 
+    ORA #$40 
+    skipSetToOutput
+    PHA 
+    LDA $030C ;Set CA2 (BC1 of 8912) to 1,
+    ORA #$EE ;set CB2 (BDIR of 8912) to 1. 
+    STA $030C ;8912 latches the address. 
+    AND #$11 ;Set CA2 and CB2 to 0, BC1 and 
+    ORA #$CC ;BDIR in inactive state. 
+    STA $030C 
+    TAX 
+    PLA 
+    STA $030F ;Send data to 8912 register.
+    TXA 
+    ORA #$EC ;Set CA2 to 0 and CB2 to 1, 
+    STA $030C ;8912 latches data. 
+    AND #$11 ;Set CA2 and CB2 to 0, BC1 and 
+    ORA #$CC ;BDIR in inactive state. 
+    STA $030C 
+    PLP 
+    RTS
+.)
+
+
 independentSound
+.(
     LDA $02E1 ;SOUND
     CMP #$01 ;Branch if tone channel A is     
     BNE channelANotUsed ;not being used. 
@@ -12,7 +46,7 @@ independentSound
     JSR $F590 ;Write low byte of period. 
     LDA #$01 
     LDX $02E4 
-    JSR $F590 ;Write high byte of period. 
+    JSR writeXToA8912; $F590 ;Write high byte of period. 
     loadAmplitudeChannelA; $FB57 
     LDA $02E5 ;Load amplitude and keep it in 
     AND #$0F ;the range 0-15. If amplitude 
@@ -23,17 +57,17 @@ independentSound
     TAX 
     skipChannelAEnvelope
     LDA #$08     
-    JSR $F590 
+    JSR writeXToA8912; $F590 
     RTS     
     channelANotUsed
     CMP #$02 ;Branch if tone channel B is 
     BNE channelBNotUsed ;not being used. 
     LDA #$02 
     LDX $02E3 ;Write low byte of tone period 
-    JSR $F590 ;to the sound chip. 
+    JSR writeXToA8912; $F590 ;to the sound chip. 
     LDA #$03 
     LDX $02E4 ;Write high byte of tone period 
-    JSR $F590 ;to the sound chip. 
+    JSR writeXToA8912; $F590 ;to the sound chip. 
     loadAmplitudeChannelB; FB7D
     LDA $02E5 ;Load and set amplitude in 
     AND #$0F ;range 0-15. 
@@ -44,17 +78,17 @@ independentSound
     TAX 
     skipChannelBEnvelope;FB89 A9 09 
     LDA #$09 
-    JSR $F590 
+    JSR writeXToA8912; $F590 
     RTS 
     channelBNotUsed;FB8F C9 03 
     CMP #$03 ;Branch if tone channel C is 
     BNE channelCNotUsed; $FBB5 ;not being used. 
     LDA #$04 
     LDX $02E3 ;Write low byte of tone period 
-    JSR $F590 ;to the sound chip. 
+    JSR writeXToA8912; $F590 ;to the sound chip. 
     LDA #$05 
     LDX $02E4 ;Write high byte of tone period 
-    JSR $F590 ;to the sound chip. 
+    JSR writeXToA8912; $F590 ;to the sound chip. 
     loadAmplitudeChannelC; FBA3
     LDA $02E5 ;Load and set the amplitude in 
     AND #$0F ;the range 0-15.
@@ -65,12 +99,12 @@ independentSound
     TAX 
     skipChannelCEnvelope ;FBAF A9 0A 
     LDA #$0A 
-    JSR $F590 
+    JSR writeXToA8912; $F590 
     RTS 
     channelCNotUsed;FBB5 A9 06 
     LDA #$06 ;This routine sets up the noise 
     LDX $02E3 ;period to be used. 
-    JSR $F590 ;Sound channels 4, 5 & 6 
+    JSR writeXToA8912 ;$F590 ;Sound channels 4, 5 & 6 
     LDA $02E1 ;produce noise on tone channels 
     CMP #$04 ;A, B & C respectively. 
     BEQ loadAmplitudeChannelA; $FB57 
@@ -80,6 +114,7 @@ independentSound
     BEQ loadAmplitudeChannelC; $FBA3 ;An error is produced if the 
     INC $02E0 ;sound channels are not in 
     RTS ;correct range. 
+.)
 
 
 
