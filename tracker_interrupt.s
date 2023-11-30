@@ -22,9 +22,13 @@ setupTrackerInterrupt
     rts
 
 clearTrackerInterupt
-
-  
-
+.(
+    sei
+    lda #$40
+    sta INTSL
+    cli
+    rts
+.)
 
 trackerInterrupt
 .(
@@ -74,7 +78,7 @@ trackerInterrupt
         sta PARAMS_7
         lda #01
         sta PARAMS_5
-        jsr MUSIC_ATMOS
+        jsr independentMusic; MUSIC_ATMOS
         jmp channel2
 
         playNote1
@@ -100,7 +104,7 @@ trackerInterrupt
         and #$0f    
         sta PARAMS_7
         
-        jsr MUSIC_ATMOS ; call MUSIC
+        jsr independentMusic; MUSIC_ATMOS
 
         // --- start channel 2 ---
         :channel2
@@ -121,7 +125,7 @@ trackerInterrupt
         sta PARAMS_7
         lda #01
         sta PARAMS_5
-        jsr MUSIC_ATMOS
+        jsr independentMusic; MUSIC_ATMOS
         jmp channel3
 
         playNote2
@@ -147,7 +151,7 @@ trackerInterrupt
         and #$0f
         sta PARAMS_7
 
-        jsr MUSIC_ATMOS
+        jsr independentMusic; MUSIC_ATMOS
 
 
 
@@ -170,7 +174,7 @@ trackerInterrupt
         sta PARAMS_7
         lda #01
         sta PARAMS_5
-        jsr MUSIC_ATMOS
+        jsr independentMusic; MUSIC_ATMOS
         jmp countDown
 
         playNote3
@@ -196,7 +200,7 @@ trackerInterrupt
         and #$0f
         sta PARAMS_7
         
-        jsr MUSIC_ATMOS
+        jsr independentMusic; MUSIC_ATMOS
 
     ; decrement the interval count to see if we've reached the next step
     :countDown
@@ -293,7 +297,7 @@ clearSound
     sta PARAMS_5
     lda #00
     lda PARAMS_7
-    JSR MUSIC_ATMOS
+    jsr independentMusic; MUSIC_ATMOS
 
 jsr WipeParams
     lda #02
@@ -303,7 +307,7 @@ jsr WipeParams
     sta PARAMS_5
     lda #00
     lda PARAMS_7
-    JSR MUSIC_ATMOS
+    jsr independentMusic; MUSIC_ATMOS
 
 jsr WipeParams
     lda #03
@@ -313,7 +317,7 @@ jsr WipeParams
     sta PARAMS_5
     lda #00
     lda PARAMS_7
-    JSR MUSIC_ATMOS
+    jsr independentMusic; MUSIC_ATMOS
 
 jsr WipeParams
     lda #07

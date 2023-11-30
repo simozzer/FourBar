@@ -217,31 +217,36 @@ runTracker
 
     checkX
     cpx #KEY_X
-    bne loopAgain
+    bne checkA
     jsr processPasteNote
     jmp refreshTrackerScreen    
+
+    checkA
+    cpx #KEY_A
+    bne checkL
+    jsr clearTrackerInterupt
+    jsr clearSound// Silence    
+    jsr copyMusicToSaveBuffer // copy data from music buffer to save buffer    
+    lda #01 // STORE value to tell BASIC to run save
+    sta $8FFF
+    rts
+    // FROM BASIC
+    // save data
+    // resume tracker interupt
     
-/*
-    checkB
-    cpy #KEY_B
+    checkL
+    cpx #KEY_L
     bne loopAgain
-    lda _tracker_play_mode
-    cmp #TRACKER_PLAY_MODE_BAR
-    beq songMode
-
-    lda #TRACKER_PLAY_MODE_BAR
-    sta _tracker_play_mode
-    // TODO -- in tracker interrupt change on the next 16
-    // TODO -- change to current displayed bar
-    jmp loopAgain
-
-    songMode
-    lda #TRACKER_PLAY_MODE_SONG
-    sta _tracker_play_mode
-    lda #00
-    sta _tracker
-    */
+    jsr clearTrackerInterupt
+    jsr clearSound
     
+    LDA #02// STORE value to tell BASIC to run load
+    STA $8FFF
+    RTS
+    // FROM BASIC -- peform load thebn copy load buffer to music
+    // restore tracker interrupt
+
+
     loopAgain
     jmp readAgain
 .)
@@ -1227,3 +1232,36 @@ nextCheck9
 done
     rts
 .)
+
+
+copyMusicToSaveBuffer
+    lda #<trackerMusicData
+    sta _copy_mem_src_lo
+    lda #>trackerMusicData
+    sta _copy_mem_src_hi
+    lda #$00
+    sta _copy_mem_dest_lo
+    lda #$90
+    sta _copy_mem_dest_hi
+    lda #$00
+    sta _copy_mem_count_lo
+    lda #$03
+    sta _copy_mem_count_hi
+    jsr CopyMemory
+    rts
+
+copyMusicFromLoadBuffer
+    lda #$00
+    sta _copy_mem_src_lo
+    lda #$90
+    sta _copy_mem_src_hi
+    lda #<trackerMusicData
+    sta _copy_mem_dest_lo
+    lda #>trackerMusicData
+    sta _copy_mem_dest_hi
+    lda #$00
+    sta _copy_mem_count_lo
+    lda #$03
+    sta _copy_mem_count_hi
+    jsr CopyMemory
+    rts

@@ -28,11 +28,11 @@ trackerScreenData
 .byt PAPER_BLACK, INK_BLUE,   "|                                     "
 .byt PAPER_WHITE, INK_BLUE,   " Arrows to navigate. +/- Change value."
 .byt PAPER_WHITE, INK_BLUE,   " Speed: (S)lower, (F)aster.           "
-.byt PAPER_WHITE, INK_BLUE,   " Select Bar: 1,2,3,4,5,6,7,8          "
-.byt PAPER_WHITE, INK_BLUE,   " Line: (C)opy, V Paste, (D)elete      "
-.byt PAPER_WHITE, INK_BLUE,   " Note: Z Copy, X Paste, (Del)ete      "
+.byt PAPER_WHITE, INK_BLUE,   " Select Bar: 1,2,3,4,5,6,7,8.         "
+.byt PAPER_WHITE, INK_BLUE,   " Line: (C)opy, V Paste, (D)elete.     "
+.byt PAPER_WHITE, INK_BLUE,   " Note: Z Copy, X Paste, (Del)ete.     "
 .byt PAPER_WHITE, INK_BLUE,   "                                      "
-.byt PAPER_WHITE, INK_BLUE,   "                                      "
+.byt PAPER_WHITE, INK_BLUE,   " File: (L)oad s(A)ve                  "
 .byt PAPER_WHITE, INK_BLUE,   " (Q)uit.                              "
 
 trackerScreenDataLo

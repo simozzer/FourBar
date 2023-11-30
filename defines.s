@@ -41,6 +41,8 @@
 #DEFINE KEY_Z 170
 #DEFINE KEY_X 176
 #DEFINE KEY_D 185
+#DEFINE KEY_A 174
+#DEFINE KEY_L 143
 
 #DEFINE KEY_1 168
 #DEFINE KEY_2 178
@@ -93,6 +95,9 @@
 
 #DEFINE MUSIC_ATMOS $fc18
 #DEFINE PLAY_ATMOS $FBd0
+
+#DEFINE COPY_MUSIC_BUFFER_START $9000; // music will be copied here for load and save then copied to where it's needed
+#DEFINE COPY_MUSIC_BUFFER_BYTE_COUNT $300
 
 #DEFINE INTSL $024A ; Retrun from interupt handler (normally RTI)
 
