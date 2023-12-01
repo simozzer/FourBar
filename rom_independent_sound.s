@@ -180,11 +180,7 @@ jumpToSound
 
 TonePeriodLookup1
 //FC5E
-    .byt $00,$07,$07,$06,$06,$05,$05,$05 ;Data for the Music command. 
-//FC66 
-    .byt $04,$04
+    .byt $00,$07,$07,$06,$06,$05,$05,$05,$04,$04,$04,$04,$03
 TonePeriodLookup2
-//FC68
-    .byt $04,$04,$03,$00,$77,$0B ; Converts the notes into tone 
-//FC6E 
-    .byt $A6,$47,$EC,$97,$47,$FB,$B3,$70 ; periods. 
+//FC6B
+    .byt $00,$77,$0B,$A6,$47,$EC,$97,$47,$FB,$B3,$70,$30,$F4

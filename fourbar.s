@@ -97,6 +97,10 @@ runTracker
     checkQuit
     cpx #KEY_Q
     bne checkDelete
+    jsr clearTrackerInterupt
+    jsr clearSound// Silence  
+    lda #0
+    sta $8FFF
     rts
 
     checkDelete
