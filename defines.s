@@ -102,7 +102,7 @@
 #DEFINE ROM_CHECK_ADDR $EDAD; Contains 49 on Atmos and 32 on oric 1
 #DEFINE ROM_CHECK_ATMOS 49;
 
-#DEFINE INTSL_ATMOS $024A ; Retrun from interupt handler (normally RTI)
-#DEFINE INTSL_ORIC1 $0230 ; on oric 1
+#DEFINE INTSL_ATMOS $024A ; Return from interrupt handler (normally RTI)
+#DEFINE INTSL_ORIC1 $0230 ;
 
 #DEFINE TRACKER_STEP_LENGTH 10 ;// number of times interrupts handler should be called before advancing to the next step
