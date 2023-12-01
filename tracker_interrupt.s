@@ -1,3 +1,4 @@
+
 setupTrackerInterrupt
 
     lda #0
@@ -10,24 +11,50 @@ setupTrackerInterrupt
   
     sei
 
-    lda #<trackerInterrupt
-    sta INTSL+1
-    lda #>trackerInterrupt
-    sta INTSL+2 
+    clc
+    lda ROM_CHECK_ADDR; // EDAD contains 49 (ascii code for 1 with rom 1.1)
+    cmp #ROM_CHECK_ATMOS
+    bcc setupOric1Interrupt
 
+    lda #<trackerInterrupt
+    sta INTSL_ATMOS+1
+    lda #>trackerInterrupt
+    sta INTSL_ATMOS+2 
     lda #$4c
-    sta INTSL
-    
+    sta INTSL_ATMOS
+    cli
+    rts
+
+    setupOric1Interrupt
+    lda #<trackerInterrupt
+    sta INTSL_ORIC1+1
+    lda #>trackerInterrupt
+    sta INTSL_ORIC1+2 
+    lda #$4c
+    sta INTSL_ORIC1
     cli
     rts
 
 clearTrackerInterupt
 .(
     sei
+
+    clc
+    lda ROM_CHECK_ADDR; // EDAD contains 49 (ascii code for 1 with rom 1.1)
+    cmp #ROM_CHECK_ATMOS
+    bcc clearOric1Interrupt
     lda #$40
-    sta INTSL
+    sta INTSL_ATMOS
     cli
     rts
+
+    clearOric1Interrupt
+    lda #$40
+    sta INTSL_ORIC1
+    cli
+    rts
+
+
 .)
 
 trackerInterrupt

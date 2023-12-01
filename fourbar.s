@@ -40,7 +40,6 @@ runTracker
     jsr printTrackerScreen
 
     :readAgain
-    jsr _getKey
     ldx KEY_PRESS_LOOKUP
     cpx _last_key
     beq readAgain

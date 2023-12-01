@@ -1,4 +1,3 @@
-#define _getKey		$EB78
 
 #DEFINE PAPER_BLACK 16
 #DEFINE PAPER_RED 17
@@ -99,6 +98,11 @@
 #DEFINE COPY_MUSIC_BUFFER_START $9000; // music will be copied here for load and save then copied to where it's needed
 #DEFINE COPY_MUSIC_BUFFER_BYTE_COUNT $300
 
-#DEFINE INTSL $024A ; Retrun from interupt handler (normally RTI)
+
+#DEFINE ROM_CHECK_ADDR $EDAD; Contains 49 on Atmos and 32 on oric 1
+#DEFINE ROM_CHECK_ATMOS 49;
+
+#DEFINE INTSL_ATMOS $024A ; Retrun from interupt handler (normally RTI)
+#DEFINE INTSL_ORIC1 $0230 ; on oric 1
 
 #DEFINE TRACKER_STEP_LENGTH 10 ;// number of times interrupts handler should be called before advancing to the next step
