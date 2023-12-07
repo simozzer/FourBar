@@ -112,13 +112,13 @@ runTracker
     checkCopy
     cpx #KEY_C
     bne checkPaste
-    jsr processCopy
+    jsr processCopyLine
     jmp refreshTrackerScreen
 
     checkPaste
     cpx #KEY_V
     bne checkS
-    jsr processPaste
+    jsr processPasteLine
     jmp refreshTrackerScreen
 
     checkS
@@ -232,6 +232,7 @@ runTracker
     jsr copyMusicToSaveBuffer // copy data from music buffer to save buffer    
     lda #01 // STORE value to tell BASIC to run save
     sta $8FFF
+    bob
     rts
     // FROM BASIC
     // save data
@@ -239,7 +240,7 @@ runTracker
     
     checkL
     cpx #KEY_L
-    bne loopAgain
+    bne checkB
     jsr clearTrackerInterupt
     jsr clearSound
     
@@ -249,8 +250,20 @@ runTracker
     // FROM BASIC -- peform load thebn copy load buffer to music
     // restore tracker interrupt
 
+    checkB
+    cpx #KEY_B
+    bne checkN
+    jsr processCopyBar
+    jmp loopAgain
 
-    loopAgain
+
+    checkN
+    cpx #KEY_N
+    bne loopAgain
+    jsr processPasteBar
+    jmp refreshTrackerScreen
+
+    :loopAgain
     jmp readAgain
 .)
 
@@ -278,7 +291,7 @@ slowDown
     rts
 .)
 
-processCopy
+processCopyLine
 .(
     clc
     lda _tracker_selected_row_index
@@ -300,7 +313,7 @@ processCopy
     rts
 .)
 
-processPaste
+processPasteLine
 .(
     clc
     lda _tracker_selected_row_index
@@ -1233,6 +1246,44 @@ nextCheck9
     rts     
 
 done
+    rts
+.)
+
+processCopyBar
+.(
+    ldy _first_visible_tracker_step_line
+
+    lda trackerMusicDataLo,Y
+    sta copyLoop+1
+    lda trackerMusicDataHi,y
+    sta copyLoop+2
+    
+    clc
+    ldy #00
+   :copyLoop
+    lda $ffff,Y
+    sta barCopyBuffer,Y
+    iny
+    cpy #96
+    bne copyLoop 
+    rts
+.)
+
+processPasteBar
+.(
+    LDY _first_visible_tracker_step_line
+    lda trackerMusicDataLo,Y
+    sta pasteLoop+4
+    lda trackerMusicDataHi,y
+    sta pasteLoop+5
+    clc
+    ldy #00
+    :pasteLoop
+    lda barCopyBuffer,Y
+    sta $ffff,Y
+    iny
+    cpy #96
+    bne pasteLoop
     rts
 .)
 

@@ -31,7 +31,7 @@ trackerScreenData
 .byt PAPER_WHITE, INK_BLUE,   " Select Bar: 1,2,3,4,5,6,7,8.         "
 .byt PAPER_WHITE, INK_BLUE,   " Line: (C)opy, V Paste, (D)elete.     "
 .byt PAPER_WHITE, INK_BLUE,   " Note: Z Copy, X Paste, (Del)ete.     "
-.byt PAPER_WHITE, INK_BLUE,   "                                      "
+.byt PAPER_WHITE, INK_BLUE,   " Bar: B Copy, N Paste.                "
 .byt PAPER_WHITE, INK_BLUE,   " File: (L)oad s(A)ve (Not Implemented)"
 .byt PAPER_WHITE, INK_BLUE,   " (Q)uit.                              "
 
@@ -295,3 +295,12 @@ trackerBarStartLookup
 
 soundParamCopyBuffer
 .byt 00,00,00,00,00,00,00,00,00
+
+zeroPageCopyBuffer
+.dsb $ff, 00
+
+variablesCopyBuffer
+.dsb $ff, 00
+
+barCopyBuffer
+.dsb 96,00

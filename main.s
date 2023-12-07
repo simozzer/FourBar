@@ -3,6 +3,8 @@ StartProg
 ; Main program
 ; ------------------------------------------------------------------------------
     
+    jsr copyZeroPage
+    jsr copyRuntimeVariables
     ;// NOKEYCLICK+SCREEN no cursor
 	lda #8+2	
 	sta $26a
@@ -19,7 +21,9 @@ StartProg
 
     jsr clearSound
     jsr setupTrackerInterrupt
-    jsr runTracker; 
+    jsr runTracker;
+    jsr restoreRuntimeVariables
+    jsr restoreZeroPage 
     rts
     ;// END TEST SOUND
 

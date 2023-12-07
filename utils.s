@@ -166,5 +166,75 @@ rts
 
 ; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
+copyZeroPage
+.(
+    lda #<zeroPageCopyBuffer
+    sta storeByte+1
+    lda #>zeroPageCopyBuffer
+    sta storeByte+2
+    ldy 0
+    loop
+    lda 0,y
+    :storeByte
+    sta $ffff,y
+    clc
+    iny
+    cpy #$ff
+    bcs loop
+    rts
+.)
 
-    
+restoreZeroPage
+.(
+    lda #<zeroPageCopyBuffer
+    sta readCopyByte+1
+    lda #>zeroPageCopyBuffer
+    sta readCopyByte+2
+    ldy 0
+    loop    
+    :readCopyByte
+    lda $ffff,y
+    sta 0,y
+    clc
+    iny
+    cpy #$ff
+    bcs loop
+    rts
+.)
+
+
+copyRuntimeVariables
+.(
+    lda #<variablesCopyBuffer
+    sta storeByte+1
+    lda #>variablesCopyBuffer
+    sta storeByte+2
+    ldy 0
+    loop
+    lda $200,y
+    :storeByte
+    sta $ffff,y
+    clc
+    iny
+    cpy #$ff
+    bcs loop
+    rts
+.)
+
+restoreRuntimeVariables
+.(
+    lda #<variablesCopyBuffer
+    sta readCopyByte+1
+    lda #>variablesCopyBuffer
+    sta readCopyByte+2
+    ldy 0
+    loop    
+    :readCopyByte
+    lda $ffff,y
+    sta $200,y
+    clc
+    iny
+    cpy #$ff
+    bcs loop
+    rts
+.)
