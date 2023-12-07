@@ -106,7 +106,7 @@ runTracker
     checkDelete
     cpx #KEY_DELETE
     bne checkCopy
-    jsr processDelete
+    jsr processDeleteNote
     jmp refreshTrackerScreen
 
     checkCopy
@@ -287,7 +287,7 @@ slowDown
     bpl done
     inc _tracker_step_length
 
-    done
+    :done
     rts
 .)
 
@@ -378,124 +378,124 @@ processCopyNote
     sta trackerNoteCopyByte2
 
     rts
-nextCheck0
-    cmp #TRACKER_COL_INDEX_OCT_CH1
-    bne nextCheck2
-    ldy #0
-    lda (_copy_note),Y
-    sta trackerNoteCopyByte1
-    iny 
-    lda (_copy_note),Y
-    sta trackerNoteCopyByte2
-        
-    rts
+    nextCheck0
+        cmp #TRACKER_COL_INDEX_OCT_CH1
+        bne nextCheck2
+        ldy #0
+        lda (_copy_note),Y
+        sta trackerNoteCopyByte1
+        iny 
+        lda (_copy_note),Y
+        sta trackerNoteCopyByte2
+            
+        rts
 
 
 
-nextCheck2
-    cmp #TRACKER_COL_INDEX_VOL_CH1
-    bne nextCheck3
-    ldy #0
-    lda (_copy_note),Y
-    sta trackerNoteCopyByte1
-    iny 
-    lda (_copy_note),Y
-    sta trackerNoteCopyByte2
+    nextCheck2
+        cmp #TRACKER_COL_INDEX_VOL_CH1
+        bne nextCheck3
+        ldy #0
+        lda (_copy_note),Y
+        sta trackerNoteCopyByte1
+        iny 
+        lda (_copy_note),Y
+        sta trackerNoteCopyByte2
 
-    rts
-
-
-
-nextCheck3
-    cmp #TRACKER_COL_INDEX_NOTE_CH2
-    bne nextCheck4
-
-    ldy #2
-    lda (_copy_note),Y
-    sta trackerNoteCopyByte1
-    iny 
-    lda (_copy_note),Y
-    sta trackerNoteCopyByte2
-
-
-    rts
-
-nextCheck4    
-    cmp #TRACKER_COL_INDEX_OCT_CH2
-    bne nextCheck6
-
-    ldy #2
-    lda (_copy_note),Y
-    sta trackerNoteCopyByte1
-    iny 
-    lda (_copy_note),Y
-    sta trackerNoteCopyByte2
-
-    rts
+        rts
 
 
 
-nextCheck6
-    cmp #TRACKER_COL_INDEX_VOL_CH2
-    bne nextCheck7
+    nextCheck3
+        cmp #TRACKER_COL_INDEX_NOTE_CH2
+        bne nextCheck4
 
-    ldy #2
-    lda (_copy_note),Y
-    sta trackerNoteCopyByte1
-    iny 
-    lda (_copy_note),Y
-    sta trackerNoteCopyByte2
-
-
-    rts
-
-nextCheck7
-    cmp  #TRACKER_COL_INDEX_NOTE_CH3
-    bne nextCheck8
-
-    ldy #4
-    lda (_copy_note),Y
-    sta trackerNoteCopyByte1
-    iny 
-    lda (_copy_note),Y
-    sta trackerNoteCopyByte2
-
-    rts
-
-nextCheck8
-    cmp #TRACKER_COL_INDEX_OCT_CH3
-    bne nextCheck9
-
-    ldy #4
-    lda (_copy_note),Y
-    sta trackerNoteCopyByte1
-    iny 
-    lda (_copy_note),Y
-    sta trackerNoteCopyByte2
+        ldy #2
+        lda (_copy_note),Y
+        sta trackerNoteCopyByte1
+        iny 
+        lda (_copy_note),Y
+        sta trackerNoteCopyByte2
 
 
-    rts
+        rts
 
-nextCheck9  
-    cmp #TRACKER_COL_INDEX_VOL_CH3
-    bne done
+    nextCheck4    
+        cmp #TRACKER_COL_INDEX_OCT_CH2
+        bne nextCheck6
 
-    ldy #4
-    lda (_copy_note),Y
-    sta trackerNoteCopyByte1
-    iny 
-    lda (_copy_note),Y
-    sta trackerNoteCopyByte2
+        ldy #2
+        lda (_copy_note),Y
+        sta trackerNoteCopyByte1
+        iny 
+        lda (_copy_note),Y
+        sta trackerNoteCopyByte2
 
-    rts
+        rts
 
-done
+
+
+    nextCheck6
+        cmp #TRACKER_COL_INDEX_VOL_CH2
+        bne nextCheck7
+
+        ldy #2
+        lda (_copy_note),Y
+        sta trackerNoteCopyByte1
+        iny 
+        lda (_copy_note),Y
+        sta trackerNoteCopyByte2
+
+
+        rts
+
+    nextCheck7
+        cmp  #TRACKER_COL_INDEX_NOTE_CH3
+        bne nextCheck8
+
+        ldy #4
+        lda (_copy_note),Y
+        sta trackerNoteCopyByte1
+        iny 
+        lda (_copy_note),Y
+        sta trackerNoteCopyByte2
+
+        rts
+
+    nextCheck8
+        cmp #TRACKER_COL_INDEX_OCT_CH3
+        bne nextCheck9
+
+        ldy #4
+        lda (_copy_note),Y
+        sta trackerNoteCopyByte1
+        iny 
+        lda (_copy_note),Y
+        sta trackerNoteCopyByte2
+
+
+        rts
+
+    nextCheck9  
+        cmp #TRACKER_COL_INDEX_VOL_CH3
+        bne done
+
+        ldy #4
+        lda (_copy_note),Y
+        sta trackerNoteCopyByte1
+        iny 
+        lda (_copy_note),Y
+        sta trackerNoteCopyByte2
+
+        rts
+
+    done
     rts
 .)
 
 processPasteNote
 .(
- clc
+    clc
     lda _tracker_selected_row_index
     adc _first_visible_tracker_step_line
     tay
@@ -516,118 +516,118 @@ processPasteNote
     sta (_copy_note),Y
 
     rts
-nextCheck0
-    cmp #TRACKER_COL_INDEX_OCT_CH1
-    bne nextCheck2
-    ldy #0
-    lda trackerNoteCopyByte1
-    sta (_copy_note),Y
-    iny 
-    lda trackerNoteCopyByte2
-    sta (_copy_note),Y
-        
-    rts
+    nextCheck0
+        cmp #TRACKER_COL_INDEX_OCT_CH1
+        bne nextCheck2
+        ldy #0
+        lda trackerNoteCopyByte1
+        sta (_copy_note),Y
+        iny 
+        lda trackerNoteCopyByte2
+        sta (_copy_note),Y
+            
+        rts
 
 
 
-nextCheck2
-    cmp #TRACKER_COL_INDEX_VOL_CH1
-    bne nextCheck3
-    ldy #0
-    lda trackerNoteCopyByte1
-    sta (_copy_note),Y
-    iny 
-    lda trackerNoteCopyByte2
-    sta (_copy_note),Y
+    nextCheck2
+        cmp #TRACKER_COL_INDEX_VOL_CH1
+        bne nextCheck3
+        ldy #0
+        lda trackerNoteCopyByte1
+        sta (_copy_note),Y
+        iny 
+        lda trackerNoteCopyByte2
+        sta (_copy_note),Y
 
-    rts
-
-
-
-nextCheck3
-    cmp #TRACKER_COL_INDEX_NOTE_CH2
-    bne nextCheck4
-
-    ldy #2
-    lda trackerNoteCopyByte1
-    sta (_copy_note),Y
-    iny 
-    lda trackerNoteCopyByte2
-    sta (_copy_note),Y
-
-
-    rts
-
-nextCheck4    
-    cmp #TRACKER_COL_INDEX_OCT_CH2
-    bne nextCheck6
-
-    ldy #2
-    lda trackerNoteCopyByte1
-    sta (_copy_note),Y
-    iny 
-    lda trackerNoteCopyByte2
-    sta (_copy_note),Y
-
-    rts
+        rts
 
 
 
-nextCheck6
-    cmp #TRACKER_COL_INDEX_VOL_CH2
-    bne nextCheck7
+    nextCheck3
+        cmp #TRACKER_COL_INDEX_NOTE_CH2
+        bne nextCheck4
 
-    ldy #2
-    lda trackerNoteCopyByte1
-    sta (_copy_note),Y
-    iny 
-    lda trackerNoteCopyByte2
-    sta (_copy_note),Y
-
-
-    rts
-
-nextCheck7
-    cmp  #TRACKER_COL_INDEX_NOTE_CH3
-    bne nextCheck8
-
-    ldy #4
-    lda trackerNoteCopyByte1
-    sta (_copy_note),Y
-    iny 
-    lda trackerNoteCopyByte2
-    sta (_copy_note),Y
-
-    rts
-
-nextCheck8
-    cmp #TRACKER_COL_INDEX_OCT_CH3
-    bne nextCheck9
-
-    ldy #4
-    lda trackerNoteCopyByte1
-    sta (_copy_note),Y
-    iny 
-    lda trackerNoteCopyByte2
-    sta (_copy_note),Y
+        ldy #2
+        lda trackerNoteCopyByte1
+        sta (_copy_note),Y
+        iny 
+        lda trackerNoteCopyByte2
+        sta (_copy_note),Y
 
 
-    rts
+        rts
 
-nextCheck9  
-    cmp #TRACKER_COL_INDEX_VOL_CH3
-    bne done
+    nextCheck4    
+        cmp #TRACKER_COL_INDEX_OCT_CH2
+        bne nextCheck6
 
-    ldy #4
-    lda trackerNoteCopyByte1
-    sta (_copy_note),Y
-    iny 
-    lda trackerNoteCopyByte2
-    sta (_copy_note),Y
+        ldy #2
+        lda trackerNoteCopyByte1
+        sta (_copy_note),Y
+        iny 
+        lda trackerNoteCopyByte2
+        sta (_copy_note),Y
 
-    rts
+        rts
 
-done
+
+
+    nextCheck6
+        cmp #TRACKER_COL_INDEX_VOL_CH2
+        bne nextCheck7
+
+        ldy #2
+        lda trackerNoteCopyByte1
+        sta (_copy_note),Y
+        iny 
+        lda trackerNoteCopyByte2
+        sta (_copy_note),Y
+
+
+        rts
+
+    nextCheck7
+        cmp  #TRACKER_COL_INDEX_NOTE_CH3
+        bne nextCheck8
+
+        ldy #4
+        lda trackerNoteCopyByte1
+        sta (_copy_note),Y
+        iny 
+        lda trackerNoteCopyByte2
+        sta (_copy_note),Y
+
+        rts
+
+    nextCheck8
+        cmp #TRACKER_COL_INDEX_OCT_CH3
+        bne nextCheck9
+
+        ldy #4
+        lda trackerNoteCopyByte1
+        sta (_copy_note),Y
+        iny 
+        lda trackerNoteCopyByte2
+        sta (_copy_note),Y
+
+
+        rts
+
+    nextCheck9  
+        cmp #TRACKER_COL_INDEX_VOL_CH3
+        bne done
+
+        ldy #4
+        lda trackerNoteCopyByte1
+        sta (_copy_note),Y
+        iny 
+        lda trackerNoteCopyByte2
+        sta (_copy_note),Y
+
+        rts
+
+    done
     rts
 .)
 
@@ -673,219 +673,219 @@ processPlus
     sta (_copy_mem_src),y
     rts
 
-nextCheck0
-    cmp #TRACKER_COL_INDEX_OCT_CH1
-    bne nextCheck2
+    nextCheck0
+        cmp #TRACKER_COL_INDEX_OCT_CH1
+        bne nextCheck2
 
-    ldy #0
-    lda (_copy_mem_src),y
-    tax
-    and #$0f
-    sta _lo_nibble
-    txa
-    and #$f0
-    lsr
-    lsr 
-    lsr
-    lsr
-    sta _hi_nibble
-    clc
-    cmp #07
-    bcc incrementOctChannel1
-    jmp done
+        ldy #0
+        lda (_copy_mem_src),y
+        tax
+        and #$0f
+        sta _lo_nibble
+        txa
+        and #$f0
+        lsr
+        lsr 
+        lsr
+        lsr
+        sta _hi_nibble
+        clc
+        cmp #07
+        bcc incrementOctChannel1
+        jmp done
 
-    incrementOctChannel1 // Add to oct value channel 1
-    clc
-    adc #$01
-    asl
-    asl
-    asl
-    asl
+        incrementOctChannel1 // Add to oct value channel 1
+        clc
+        adc #$01
+        asl
+        asl
+        asl
+        asl
 
-    adc _lo_nibble
-    ldy #0
-    sta (_copy_mem_src),y
-    rts
-
-
-
-nextCheck2
-    cmp #TRACKER_COL_INDEX_VOL_CH1
-    bne nextCheck3
-
-    
-    ldy #1
-    lda (_copy_mem_src),y
-    and #$0f
-    clc
-    cmp #15
-    bcc incrementVolChannel1
-    jmp done
-
-    incrementVolChannel1 // Add to oct value channel 1
-    adc #$01
-    sta (_copy_mem_src),y
-    rts
+        adc _lo_nibble
+        ldy #0
+        sta (_copy_mem_src),y
+        rts
 
 
 
-nextCheck3
-    cmp #TRACKER_COL_INDEX_NOTE_CH2
-    bne nextCheck4
+    nextCheck2
+        cmp #TRACKER_COL_INDEX_VOL_CH1
+        bne nextCheck3
 
-    ldy #2
-    lda (_copy_mem_src),y
-    tax
-    and #$F0
-    sta _hi_nibble
-    txa
-    and #$0f
-    sta _lo_nibble
-    cmp #12
-    bmi incrementNoteChannel2
-    jmp done
+        
+        ldy #1
+        lda (_copy_mem_src),y
+        and #$0f
+        clc
+        cmp #15
+        bcc incrementVolChannel1
+        jmp done
 
-    incrementNoteChannel2 // Add to note value channel 2
-    tax
-    inx
-    txa
-    sta _lo_nibble
-    adc _hi_nibble
-    ldy #2
-    sta (_copy_mem_src),y
-    rts
-
-nextCheck4    
-    cmp #TRACKER_COL_INDEX_OCT_CH2
-    bne nextCheck6
-
-    ldy #2
-    lda (_copy_mem_src),y
-    tax
-    and #$0f
-    sta _lo_nibble
-    txa
-    and #$f0
-    lsr
-    lsr 
-    lsr
-    lsr
-    sta _hi_nibble
-    clc
-    cmp #07
-    bcc incrementOctChannel2
-    jmp done
-
-    incrementOctChannel2 // Add to oct value channel 2
-    clc
-    adc #$01
-    asl
-    asl
-    asl
-    asl
-
-    adc _lo_nibble
-    ldy #2
-    sta (_copy_mem_src),y
-    rts
+        incrementVolChannel1 // Add to oct value channel 1
+        adc #$01
+        sta (_copy_mem_src),y
+        rts
 
 
 
-nextCheck6
-    cmp #TRACKER_COL_INDEX_VOL_CH2
-    bne nextCheck7
+    nextCheck3
+        cmp #TRACKER_COL_INDEX_NOTE_CH2
+        bne nextCheck4
 
-    ldy #3
-    lda (_copy_mem_src),y
-    and #$0f
-    clc
-    cmp #15
-    bcc incrementVolChannel2
-    jmp done
+        ldy #2
+        lda (_copy_mem_src),y
+        tax
+        and #$F0
+        sta _hi_nibble
+        txa
+        and #$0f
+        sta _lo_nibble
+        cmp #12
+        bmi incrementNoteChannel2
+        jmp done
 
-    incrementVolChannel2 // Add to oct value channel 2
-    clc
-    adc #$01
-    sta (_copy_mem_src),y
-    rts
+        incrementNoteChannel2 // Add to note value channel 2
+        tax
+        inx
+        txa
+        sta _lo_nibble
+        adc _hi_nibble
+        ldy #2
+        sta (_copy_mem_src),y
+        rts
 
-nextCheck7
-    cmp  #TRACKER_COL_INDEX_NOTE_CH3
-    bne nextCheck8
+    nextCheck4    
+        cmp #TRACKER_COL_INDEX_OCT_CH2
+        bne nextCheck6
 
-    ldy #4
-    lda (_copy_mem_src),y
-    tax
-    and #$F0
-    sta _hi_nibble
-    txa
-    and #$0f
-    sta _lo_nibble
-    cmp #12
-    bmi incrementNoteChannel3
-    jmp done
+        ldy #2
+        lda (_copy_mem_src),y
+        tax
+        and #$0f
+        sta _lo_nibble
+        txa
+        and #$f0
+        lsr
+        lsr 
+        lsr
+        lsr
+        sta _hi_nibble
+        clc
+        cmp #07
+        bcc incrementOctChannel2
+        jmp done
 
-    incrementNoteChannel3 // Add to note value channel 2
-    tax
-    inx
-    txa
-    sta _lo_nibble
-    adc _hi_nibble
-    ldy #4
-    sta (_copy_mem_src),y
-    rts
+        incrementOctChannel2 // Add to oct value channel 2
+        clc
+        adc #$01
+        asl
+        asl
+        asl
+        asl
 
-nextCheck8
-    cmp #TRACKER_COL_INDEX_OCT_CH3
-    bne nextCheck9
+        adc _lo_nibble
+        ldy #2
+        sta (_copy_mem_src),y
+        rts
 
-    ldy #4
-    lda (_copy_mem_src),y
-    tax
-    and #$0f
-    sta _lo_nibble
-    txa
-    and #$f0
-    lsr
-    lsr 
-    lsr
-    lsr
-    sta _hi_nibble
-    clc
-    cmp #07
-    bcc incrementOctChannel3
-    jmp done
 
-    incrementOctChannel3 // Add to oct value channel 1
-    clc
-    adc #$01
-    asl
-    asl
-    asl
-    asl
 
-    adc _lo_nibble
-    ldy #4
-    sta (_copy_mem_src),y
-    rts
+    nextCheck6
+        cmp #TRACKER_COL_INDEX_VOL_CH2
+        bne nextCheck7
 
-nextCheck9  
-    cmp #TRACKER_COL_INDEX_VOL_CH3
-    bne done
-    ldy #5
-    lda (_copy_mem_src),y
-    and #$0f
-    clc
-    cmp #15
-    bcc incrementVolChannel3
-    jmp done
+        ldy #3
+        lda (_copy_mem_src),y
+        and #$0f
+        clc
+        cmp #15
+        bcc incrementVolChannel2
+        jmp done
 
-    incrementVolChannel3 // Add to oct value channel 1
-    adc #$01
-    sta (_copy_mem_src),y
-    rts
+        incrementVolChannel2 // Add to oct value channel 2
+        clc
+        adc #$01
+        sta (_copy_mem_src),y
+        rts
 
-done
+    nextCheck7
+        cmp  #TRACKER_COL_INDEX_NOTE_CH3
+        bne nextCheck8
+
+        ldy #4
+        lda (_copy_mem_src),y
+        tax
+        and #$F0
+        sta _hi_nibble
+        txa
+        and #$0f
+        sta _lo_nibble
+        cmp #12
+        bmi incrementNoteChannel3
+        jmp done
+
+        incrementNoteChannel3 // Add to note value channel 2
+        tax
+        inx
+        txa
+        sta _lo_nibble
+        adc _hi_nibble
+        ldy #4
+        sta (_copy_mem_src),y
+        rts
+
+    nextCheck8
+        cmp #TRACKER_COL_INDEX_OCT_CH3
+        bne nextCheck9
+
+        ldy #4
+        lda (_copy_mem_src),y
+        tax
+        and #$0f
+        sta _lo_nibble
+        txa
+        and #$f0
+        lsr
+        lsr 
+        lsr
+        lsr
+        sta _hi_nibble
+        clc
+        cmp #07
+        bcc incrementOctChannel3
+        jmp done
+
+        incrementOctChannel3 // Add to oct value channel 1
+        clc
+        adc #$01
+        asl
+        asl
+        asl
+        asl
+
+        adc _lo_nibble
+        ldy #4
+        sta (_copy_mem_src),y
+        rts
+
+    nextCheck9  
+        cmp #TRACKER_COL_INDEX_VOL_CH3
+        bne done
+        ldy #5
+        lda (_copy_mem_src),y
+        and #$0f
+        clc
+        cmp #15
+        bcc incrementVolChannel3
+        jmp done
+
+        incrementVolChannel3 // Add to oct value channel 1
+        adc #$01
+        sta (_copy_mem_src),y
+        rts
+
+    done
     rts
 .)
 ; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< 
@@ -936,225 +936,225 @@ processMinus
     sta (_copy_mem_src),y
     rts
 
-nextCheck0
-    cmp #TRACKER_COL_INDEX_OCT_CH1
-    bne nextCheck2
-    ldy #0
-    lda (_copy_mem_src),y
-    tax
-    and #$0f
-    sta _lo_nibble
-    txa
-    and #$f0
-    lsr
-    lsr 
-    lsr
-    lsr
-    sta _hi_nibble
-    clc
-    cmp #0
-    bne decrementOctChannel1
-    jmp done
+    nextCheck0
+        cmp #TRACKER_COL_INDEX_OCT_CH1
+        bne nextCheck2
+        ldy #0
+        lda (_copy_mem_src),y
+        tax
+        and #$0f
+        sta _lo_nibble
+        txa
+        and #$f0
+        lsr
+        lsr 
+        lsr
+        lsr
+        sta _hi_nibble
+        clc
+        cmp #0
+        bne decrementOctChannel1
+        jmp done
 
-    decrementOctChannel1 // Add to oct value channel 1
-    tax
-    dex
-    txa
-    asl
-    asl
-    asl
-    asl
-    adc _lo_nibble
-    ldy #0
-    sta (_copy_mem_src),y
-    rts
+        decrementOctChannel1 // Add to oct value channel 1
+        tax
+        dex
+        txa
+        asl
+        asl
+        asl
+        asl
+        adc _lo_nibble
+        ldy #0
+        sta (_copy_mem_src),y
+        rts
 
-nextCheck2
-    cmp #TRACKER_COL_INDEX_VOL_CH1
-    bne nextCheck3
+    nextCheck2
+        cmp #TRACKER_COL_INDEX_VOL_CH1
+        bne nextCheck3
 
-    
-    ldy #1
-    lda (_copy_mem_src),y
-    and #$0f
-    clc
-    cmp #0
-    bne decrementVolChannel1
-    jmp done
+        
+        ldy #1
+        lda (_copy_mem_src),y
+        and #$0f
+        clc
+        cmp #0
+        bne decrementVolChannel1
+        jmp done
 
-    decrementVolChannel1 // Add to oct value channel 1
-    sbc #01
-    sta (_copy_mem_src),y
-    rts
+        decrementVolChannel1 // Add to oct value channel 1
+        sbc #01
+        sta (_copy_mem_src),y
+        rts
 
-nextCheck3
-    cmp #TRACKER_COL_INDEX_NOTE_CH2
-    bne nextCheck4
+    nextCheck3
+        cmp #TRACKER_COL_INDEX_NOTE_CH2
+        bne nextCheck4
 
-    ldy #2
-    lda (_copy_mem_src),y
-    tax
-    and #$F0
-    sta _hi_nibble
-    txa
-    and #$0f
-    sta _lo_nibble
-    clc
-    cmp #02
-    bcs decrementNoteChanel2
-    jmp done
+        ldy #2
+        lda (_copy_mem_src),y
+        tax
+        and #$F0
+        sta _hi_nibble
+        txa
+        and #$0f
+        sta _lo_nibble
+        clc
+        cmp #02
+        bcs decrementNoteChanel2
+        jmp done
 
-    decrementNoteChanel2 // subtract from note value channel 2
-    tax
-    dex
-    txa
-    clc
-    sta _lo_nibble
-    adc _hi_nibble
-    ldy #2
-    sta (_copy_mem_src),y
-    rts
+        decrementNoteChanel2 // subtract from note value channel 2
+        tax
+        dex
+        txa
+        clc
+        sta _lo_nibble
+        adc _hi_nibble
+        ldy #2
+        sta (_copy_mem_src),y
+        rts
 
 
-nextCheck4    
-    cmp #TRACKER_COL_INDEX_OCT_CH2
-    bne nextCheck6
+    nextCheck4    
+        cmp #TRACKER_COL_INDEX_OCT_CH2
+        bne nextCheck6
 
-    ldy #2
-    lda (_copy_mem_src),y
-    tax
-    and #$0f
-    sta _lo_nibble
-    txa
-    and #$f0
-    lsr
-    lsr 
-    lsr
-    lsr
-    sta _hi_nibble
-    clc
-    cmp #0
-    bne decrementOctChannel2
-    jmp done
+        ldy #2
+        lda (_copy_mem_src),y
+        tax
+        and #$0f
+        sta _lo_nibble
+        txa
+        and #$f0
+        lsr
+        lsr 
+        lsr
+        lsr
+        sta _hi_nibble
+        clc
+        cmp #0
+        bne decrementOctChannel2
+        jmp done
 
-    decrementOctChannel2 // subtract from oct value channel 2
-    tax
-    dex
-    txa
-    asl
-    asl
-    asl
-    asl
+        decrementOctChannel2 // subtract from oct value channel 2
+        tax
+        dex
+        txa
+        asl
+        asl
+        asl
+        asl
 
-    adc _lo_nibble
-    ldy #2
-    sta (_copy_mem_src),y
-    rts
-nextCheck6
-    cmp #TRACKER_COL_INDEX_VOL_CH2
-    bne nextCheck7
+        adc _lo_nibble
+        ldy #2
+        sta (_copy_mem_src),y
+        rts
+    nextCheck6
+        cmp #TRACKER_COL_INDEX_VOL_CH2
+        bne nextCheck7
 
-    ldy #3
-    lda (_copy_mem_src),y
-    and #$0f
-    clc
-    cmp #0
-    bne decrementVolChannel2
-    jmp done
+        ldy #3
+        lda (_copy_mem_src),y
+        and #$0f
+        clc
+        cmp #0
+        bne decrementVolChannel2
+        jmp done
 
-    decrementVolChannel2 // Add to oct value channel 1
-    sbc #01
-    sta (_copy_mem_src),y
-    rts
+        decrementVolChannel2 // Add to oct value channel 1
+        sbc #01
+        sta (_copy_mem_src),y
+        rts
 
-nextCheck7
-    cmp  #TRACKER_COL_INDEX_NOTE_CH3
-    bne nextCheck8
+    nextCheck7
+        cmp  #TRACKER_COL_INDEX_NOTE_CH3
+        bne nextCheck8
 
-    ldy #4
-    lda (_copy_mem_src),y
-    tax
-    and #$F0
-    sta _hi_nibble
-    txa
-    and #$0f
-    sta _lo_nibble
-    clc
-    cmp #02
-    bcs decrementNoteChanel3
-    jmp done
+        ldy #4
+        lda (_copy_mem_src),y
+        tax
+        and #$F0
+        sta _hi_nibble
+        txa
+        and #$0f
+        sta _lo_nibble
+        clc
+        cmp #02
+        bcs decrementNoteChanel3
+        jmp done
 
-    decrementNoteChanel3 // subtract from note value channel 1
-    tax
-    dex
-    txa
-    clc
-    sta _lo_nibble
-    adc _hi_nibble
-    ldy #4
-    sta (_copy_mem_src),y
-    rts
+        decrementNoteChanel3 // subtract from note value channel 1
+        tax
+        dex
+        txa
+        clc
+        sta _lo_nibble
+        adc _hi_nibble
+        ldy #4
+        sta (_copy_mem_src),y
+        rts
 
-nextCheck8
-    cmp #TRACKER_COL_INDEX_OCT_CH3
-    bne nextCheck9
-    ldy #4
-    lda (_copy_mem_src),y
-    tax
-    and #$0f
-    sta _lo_nibble
-    txa
-    and #$f0
-    lsr
-    lsr 
-    lsr
-    lsr
-    sta _hi_nibble
-    clc
-    cmp #0
-    bne decrementOctChannel3
-    jmp done
+    nextCheck8
+        cmp #TRACKER_COL_INDEX_OCT_CH3
+        bne nextCheck9
+        ldy #4
+        lda (_copy_mem_src),y
+        tax
+        and #$0f
+        sta _lo_nibble
+        txa
+        and #$f0
+        lsr
+        lsr 
+        lsr
+        lsr
+        sta _hi_nibble
+        clc
+        cmp #0
+        bne decrementOctChannel3
+        jmp done
 
-    decrementOctChannel3 // Add to oct value channel 1
-    tax
-    dex
-    txa
-    asl
-    asl
-    asl
-    asl
-    adc _lo_nibble
-    ldy #4
-    sta (_copy_mem_src),y
-    rts
-    
-nextCheck9
-    cmp #TRACKER_COL_INDEX_VOL_CH3
-    bne done
+        decrementOctChannel3 // Add to oct value channel 1
+        tax
+        dex
+        txa
+        asl
+        asl
+        asl
+        asl
+        adc _lo_nibble
+        ldy #4
+        sta (_copy_mem_src),y
+        rts
+        
+    nextCheck9
+        cmp #TRACKER_COL_INDEX_VOL_CH3
+        bne done
 
-    ldy #5
-    lda (_copy_mem_src),y
-    and #$0f
-    clc
-    cmp #0
-    bne decrementVolChannel3
-    jmp done
+        ldy #5
+        lda (_copy_mem_src),y
+        and #$0f
+        clc
+        cmp #0
+        bne decrementVolChannel3
+        jmp done
 
-    decrementVolChannel3 // Add to oct value channel 1
-    sbc #01
-    sta (_copy_mem_src),y
-    rts
+        decrementVolChannel3 // Add to oct value channel 1
+        sbc #01
+        sta (_copy_mem_src),y
+        rts
 
-done
+    done
     rts
 .)
 ; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< 
 
 
 
-processDelete
+processDeleteNote
 .(
-        clc
+    clc
     lda _tracker_selected_row_index
     adc _first_visible_tracker_step_line
     tay
@@ -1172,81 +1172,81 @@ processDelete
     sta (_copy_mem_src),y
     rts
 
-nextCheck0
-    cmp #TRACKER_COL_INDEX_OCT_CH1
-    bne nextCheck2
+    nextCheck0
+        cmp #TRACKER_COL_INDEX_OCT_CH1
+        bne nextCheck2
 
-    ldy #0
-    lda #0
-    sta (_copy_mem_src),y
-    rts
+        ldy #0
+        lda #0
+        sta (_copy_mem_src),y
+        rts
 
-nextCheck2
-    cmp #TRACKER_COL_INDEX_VOL_CH1
-    bne nextCheck3
+    nextCheck2
+        cmp #TRACKER_COL_INDEX_VOL_CH1
+        bne nextCheck3
 
-    
-    ldy #1
-    lda #0
-    sta (_copy_mem_src),y
-    rts
-
-
-
-nextCheck3
-    cmp #TRACKER_COL_INDEX_NOTE_CH2
-    bne nextCheck4
-
-    ldy #2
-    lda #0
-    sta (_copy_mem_src),y
-    rts
+        
+        ldy #1
+        lda #0
+        sta (_copy_mem_src),y
+        rts
 
 
-nextCheck4    
-    cmp #TRACKER_COL_INDEX_OCT_CH2
-    bne nextCheck6
 
-    ldy #2
-    lda #0
-    sta (_copy_mem_src),y
-    rts
+    nextCheck3
+        cmp #TRACKER_COL_INDEX_NOTE_CH2
+        bne nextCheck4
 
-nextCheck6
-    cmp #TRACKER_COL_INDEX_VOL_CH2
-    bne nextCheck7
+        ldy #2
+        lda #0
+        sta (_copy_mem_src),y
+        rts
 
-    ldy #2
-    lda #0
-    sta (_copy_mem_src),y
-    rts
-nextCheck7
-    cmp #TRACKER_COL_INDEX_NOTE_CH3
-    bne nextCheck8
 
-    ldy #4
-    lda #0
-    sta (_copy_mem_src),y
-    rts    
-nextCheck8
-    cmp #TRACKER_COL_INDEX_OCT_CH3
-    bne nextCheck9
+    nextCheck4    
+        cmp #TRACKER_COL_INDEX_OCT_CH2
+        bne nextCheck6
 
-    ldy #4
-    lda #0
-    sta (_copy_mem_src),y
-    rts     
-nextCheck9
-    cmp #TRACKER_COL_INDEX_VOL_CH3
-    bne done
+        ldy #2
+        lda #0
+        sta (_copy_mem_src),y
+        rts
 
-    ldy #4
-    lda #0
-    sta (_copy_mem_src),y
-    rts     
+    nextCheck6
+        cmp #TRACKER_COL_INDEX_VOL_CH2
+        bne nextCheck7
 
-done
-    rts
+        ldy #2
+        lda #0
+        sta (_copy_mem_src),y
+        rts
+    nextCheck7
+        cmp #TRACKER_COL_INDEX_NOTE_CH3
+        bne nextCheck8
+
+        ldy #4
+        lda #0
+        sta (_copy_mem_src),y
+        rts    
+    nextCheck8
+        cmp #TRACKER_COL_INDEX_OCT_CH3
+        bne nextCheck9
+
+        ldy #4
+        lda #0
+        sta (_copy_mem_src),y
+        rts     
+    nextCheck9
+        cmp #TRACKER_COL_INDEX_VOL_CH3
+        bne done
+
+        ldy #4
+        lda #0
+        sta (_copy_mem_src),y
+        rts     
+
+    done
+        rts
 .)
 
 processCopyBar
@@ -1289,6 +1289,7 @@ processPasteBar
 
 
 copyMusicToSaveBuffer
+.(
     lda #<trackerMusicData
     sta _copy_mem_src_lo
     lda #>trackerMusicData
@@ -1303,8 +1304,10 @@ copyMusicToSaveBuffer
     sta _copy_mem_count_hi
     jsr CopyMemory
     rts
+.)
 
 copyMusicFromLoadBuffer
+.(
     lda #$00
     sta _copy_mem_src_lo
     lda #$90
@@ -1319,3 +1322,4 @@ copyMusicFromLoadBuffer
     sta _copy_mem_count_hi
     jsr CopyMemory
     rts
+.)
