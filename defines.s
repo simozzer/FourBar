@@ -93,9 +93,6 @@
 #DEFINE PARAMS_6 $02E6
 #DEFINE PARAMS_7 $02E7
 
-#DEFINE MUSIC_ATMOS $fc18
-#DEFINE PLAY_ATMOS $FBd0
-
 #DEFINE COPY_MUSIC_BUFFER_START $9000; // music will be copied here for load and save then copied to where it's needed
 #DEFINE COPY_MUSIC_BUFFER_BYTE_COUNT $300
 

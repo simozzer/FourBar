@@ -3,13 +3,7 @@
 // and we will just allow for four bars of music (initially)
 // For each channel we will store (per semi quaver)
 // Octave (hi-nibble) & Note (lo-nibble)(lo-word)
-// Length (hi-nibble) & Vol (lo-nibble)(hi-word)
-// so we should be able to contain a 'tune' in 128 bytes per channel.
-// We will just allow for 2 channels of music,
-// this will leave 1 tone channel for the game to use for simple sfx 
-// the noise channel should also be available, if I can work out
-// how to use this for drums then I will.
-
+// Vol (lo-nibble)(hi-word)
 
 // There are much better tunes available using things
 // like MYM, and other programs to created to use Atari St
@@ -17,17 +11,17 @@
 // or a lot of CPU time decompressing existing data.
 // I'm trying to keep things as simple a possible (KISS)
 // to reduce the demands on CPU and memory.
-// (And also to eliminate the learning curve by not 
-// actually learning all the IO required to program the 
-// sound chip).
 
 // The data will be stored using this format
-// OCTAVE 0-7 (3 bits, but will use 4. The hi bit will be used for 'no note')
+// OCTAVE 0-7 (3 bits, but will use 4)
 // NOTE (1-12/ can be stores as 0-11) (4 bits)
 // VOL (1-15 - volume level, 0 = use envelope from play) (lo 4 bits)
 
 
-// temporary code to test tracker screen
+; >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+; runTracker: 
+;   display the UI for the tracker and repsond to key presses
+; ------------------------------------------------------------------------------     
 runTracker
 .(
 
@@ -230,9 +224,8 @@ runTracker
     jsr clearTrackerInterupt
     jsr clearSound// Silence    
     jsr copyMusicToSaveBuffer // copy data from music buffer to save buffer    
-    lda #01 // STORE value to tell BASIC to run save
-    sta $8FFF
-    bob
+    LDA #01// STORE value to indicate run save
+    STA $8FFF
     rts
     // FROM BASIC
     // save data
@@ -266,7 +259,14 @@ runTracker
     :loopAgain
     jmp readAgain
 .)
+; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
+
+
+; >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+; speedUp: 
+;   reduce the interval between steps to speed up playback
+; ------------------------------------------------------------------------------   
 speedUp
 .(
     lda _tracker_step_length
@@ -279,7 +279,14 @@ speedUp
     dec _tracker_step_length
     rts
 .)
+; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
+
+
+; >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+; slowDown: 
+;   increase the interval between steps to slow down playback
+; ------------------------------------------------------------------------------  
 slowDown
 .(
     lda _tracker_step_length
@@ -290,7 +297,15 @@ slowDown
     :done
     rts
 .)
+; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
+
+
+
+; >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+; processCopyLine: 
+;   copy the selected line of notes into a buffer
+; ------------------------------------------------------------------------------ 
 processCopyLine
 .(
     clc
@@ -312,7 +327,15 @@ processCopyLine
     bne copyLoop 
     rts
 .)
+; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
+
+
+
+; >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+; processPasteBuffer: 
+;   paste the copy line buffer into the currently selected line
+; ------------------------------------------------------------------------------ 
 processPasteLine
 .(
     clc
@@ -333,7 +356,14 @@ processPasteLine
     bne pasteLoop
     rts
 .)
+; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
+
+
+; >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+; deleteLine: 
+;   delete all notes in the currently selected line
+; ------------------------------------------------------------------------------ 
 deleteLine
 .(
     clc
@@ -354,7 +384,14 @@ deleteLine
     bne deleteLoop
     rts
 .)
+; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
+
+
+; >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+; processCopyNote: 
+;   copy the currently selected note
+; ------------------------------------------------------------------------------ 
 processCopyNote
 .(
     clc
@@ -492,7 +529,13 @@ processCopyNote
     done
     rts
 .)
+; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
+
+; >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+; processPasteNote: 
+;   paste the copy buffer over the currently selected note
+; ------------------------------------------------------------------------------ 
 processPasteNote
 .(
     clc
@@ -630,6 +673,10 @@ processPasteNote
     done
     rts
 .)
+; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+
 
 ; >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ; processPlus: 
@@ -891,7 +938,6 @@ processPlus
 ; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< 
 
 
-
 ; >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ; processMinus: 
 ;   handle the plus key being pressed to decrement a column value
@@ -1151,7 +1197,10 @@ processMinus
 ; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< 
 
 
-
+; >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+; processDeleteNote: 
+;   handle the delete key being pressed to delete the currently selected note
+; ------------------------------------------------------------------------------  
 processDeleteNote
 .(
     clc
@@ -1248,7 +1297,13 @@ processDeleteNote
     done
         rts
 .)
+; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< 
 
+
+; >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+; processCopyBar: 
+;   copy all the notes for the current line into a buffer
+; ------------------------------------------------------------------------------  
 processCopyBar
 .(
     ldy _first_visible_tracker_step_line
@@ -1268,7 +1323,13 @@ processCopyBar
     bne copyLoop 
     rts
 .)
+; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< 
 
+
+; >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+; processPasteBar: 
+;   paste over all the notes in the current bar from a copy buffer
+; ------------------------------------------------------------------------------ 
 processPasteBar
 .(
     LDY _first_visible_tracker_step_line
@@ -1286,8 +1347,15 @@ processPasteBar
     bne pasteLoop
     rts
 .)
+; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< 
 
 
+
+; >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+; copyMusicToSaveBuffer: 
+;   copy all the data from all notes, in all bars, to a seperate location
+;   so that we can save the data.
+; ------------------------------------------------------------------------------ 
 copyMusicToSaveBuffer
 .(
     lda #<trackerMusicData
@@ -1305,7 +1373,15 @@ copyMusicToSaveBuffer
     jsr CopyMemory
     rts
 .)
+; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< 
 
+
+
+; >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+; copyMusicFromLoadBuffer: 
+;   copy the data, as loaded into memory, from the load buffer into the actual
+;   area used by the tracker.
+; ------------------------------------------------------------------------------ 
 copyMusicFromLoadBuffer
 .(
     lda #$00
@@ -1323,3 +1399,4 @@ copyMusicFromLoadBuffer
     jsr CopyMemory
     rts
 .)
+; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< 
