@@ -32,8 +32,8 @@ trackerScreenData
 .byt PAPER_WHITE, INK_BLUE,   " Line: (C)opy, V Paste, (D)elete.     "
 .byt PAPER_WHITE, INK_BLUE,   " Note: Z Copy, X Paste, (Del)ete.     "
 .byt PAPER_WHITE, INK_BLUE,   " Bar: B Copy, N Paste.                "
-.byt PAPER_WHITE, INK_BLUE,   " File: (L)oad s(A)ve (Not Implemented)"
-.byt PAPER_WHITE, INK_BLUE,   " (Q)uit.                              "
+.byt PAPER_WHITE, INK_BLUE,   " File: (L)oad s(A)ve (Q)uit.          "
+.byt PAPER_WHITE, INK_BLUE,   "                                      "
 
 trackerScreenDataLo
     .byt <trackerScreenData + 0,<trackerScreenData + 40,<trackerScreenData + 80,<trackerScreenData + 120,<trackerScreenData + 160
