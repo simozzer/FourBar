@@ -1,5 +1,5 @@
 # FourBar
-A basic tracker program for the Oric computer.
+A basic tracker program for the Oric computer, with the final aim being to provide background music in programs.
 
 (A work in progress)
 
@@ -10,13 +10,13 @@ Work completed:
 
 Each bar of music will loop until the next bar is triggered. 
 
-The user can trigger the next bar by pressiong the numeric keys (1-8).
+The user can trigger the next bar by pressing the numeric keys (1-8).
 
 The next bar will be started when the current bar reaches the last note.
 
-Instructions for using the program are displayed in the editor screen.
+The data for the bars can be saved to, and re-loaded from a .TAP File.
 
-The data for the bars can be saved to, and re-loaded from a .TAP File
+Instructions for using the program are displayed in the editor screen.
 
 TO DO:
 ======
@@ -26,6 +26,13 @@ Add ability to save these sequences together with the bar data.
 
 Simplify the playback loop in tracker_interrupt.s and modularise is so that it can be re-used in other people's programs.
 
+Refactor the code. 
+
+Improve comments.
+
+Look for optimizations.
+
+Reduce number of zero page variables.
 
 
 Download:
