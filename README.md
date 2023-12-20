@@ -18,7 +18,7 @@ The data for the bars can be saved to, and re-loaded from a .TAP File.
 
 Instructions for using the program are displayed in the editor screen.
 
-[Bar Editor](BarEditor.png)
+![Bar Editor](BarEditor.png)
 
 TO DO:
 ======
