@@ -39,7 +39,7 @@ Download:
 =========
 The latest working version of the program is available in the build section as FOURBAR.TAP.
 
-[Download](/BUILD/Fourbar.tap)
+[Download](/BUILD/FOURBAR.tap)
 
 I've decided to try use a mix of basic an assembler for this, as it will simplify the code (particularly the load & save routines).
 
