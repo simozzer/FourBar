@@ -37,7 +37,7 @@ Reduce number of zero page variables.
 
 Download:
 =========
-The latest working version of the program is available in the [build section)(/BUILD) as FOURBAR.TAP.
+The latest working version of the program is available in the [build section](/BUILD) as FOURBAR.TAP.
 
 
 I've decided to try use a mix of basic an assembler for this, as it will simplify the code (particularly the load & save routines).
