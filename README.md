@@ -18,6 +18,8 @@ The data for the bars can be saved to, and re-loaded from a .TAP File.
 
 Instructions for using the program are displayed in the editor screen.
 
+[Bar Editor](BarEditor.png)
+
 TO DO:
 ======
 Add a simple bar sequencer to allow building of a tune by providing a list of bar numbers to be triggered in sequence.
@@ -40,7 +42,11 @@ Download:
 The latest working version of the program is available in the [build section](/BUILD) as FOURBAR.TAP.
 
 
-I've decided to try use a mix of basic an assembler for this, as it will simplify the code (particularly the load & save routines).
+Notes:
+======
+I've decided to try use a mix of basic an assembler for this, as it will simplify the code (particularly the load & save routines) and make it easier to ensure that it works with both the
+Oric-1 (ROM v1.0) and Atmos (ROM v1.1).
+
 
 
 
