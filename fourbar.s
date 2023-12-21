@@ -225,7 +225,7 @@ runTracker
     jsr clearSound// Silence    
     jsr copyMusicToSaveBuffer // copy data from music buffer to save buffer    
     LDA #01// STORE value to indicate run save
-    STA $8FFF
+    STA $8FFF    
     rts
     // FROM BASIC
     // save data
@@ -252,9 +252,20 @@ runTracker
 
     checkN
     cpx #KEY_N
-    bne loopAgain
+    bne checkP
     jsr processPasteBar
     jmp refreshTrackerScreen
+
+    checkP
+    cpx #KEY_P
+    bne loopAgain
+    jsr clearTrackerInterupt
+    jsr clearSound
+    
+    LDA #03// STORE value to tell BASIC to print data
+    STA $8FFF
+    RTS
+
 
     :loopAgain
     jmp readAgain

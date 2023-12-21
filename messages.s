@@ -1,1 +1,1 @@
-:TrackerInstructions .byt "LET'S MAKE MUSIC",0
+:TrackerInstructions .byt "FOURBAR: Bar Editor",0

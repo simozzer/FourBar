@@ -35,76 +35,11 @@ Loop
 ; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
-
-
-
-
-; >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-; Perform a short delay (currently used to slow to down the game a bit)
-; ------------------------------------------------------------------------------
-smallDelay
-.(
-    txa
-    pha
-    ldx #$10
-
-    outer_loop
-    
-    ; a small delay
-    ldy #255
-    loop
-    dey
-    nop
-    cpy #00
-    Bne loop
-    dex
-    cpx #00 
-    bpl outer_loop
-
-    pla
-    tax
-    rts    
-.)
-; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-
-
-
-; >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-; Perform a big delay (currently used to wait a while before restarting the game
-; ------------------------------------------------------------------------------
-bigDelay
-.(
-    txa
-    pha
-    ldx #$ff
-
-    outer_loop
-    
-    ; a small delay
-    ldy #255
-    loop
-    dey
-    nop
-    cpy #00
-    Bne loop
-    dex
-    cpx #00 
-    bne outer_loop
-
-    pla
-    tax
-    rts    
-.)
-; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-
-
-
 ; >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;// Copy memory (could be further opitimised using comments from dhbug)
 ; ------------------------------------------------------------------------------
 CopyMemory 
+
     ldx _copy_mem_src_lo          
     stx LoadSourceByte+1                      
     ldx _copy_mem_src_hi                        

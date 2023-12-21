@@ -1,8 +1,10 @@
+
     .zero
 
     *= $50
 
 _zp_start_
+
 
 _copy_mem_src
 _copy_mem_src_lo .dsb 1
@@ -54,8 +56,6 @@ _playback_music_info_byte_hi .dsb 1
 _copy_note
 _copy_note_lo .dsb 1
 _copy_note_hi .dsb 1
-
-
 
 _zp_end_
 

@@ -48,6 +48,52 @@ I've decided to try use a mix of basic an assembler for this, as it will simplif
 Oric-1 (ROM v1.0) and Atmos (ROM v1.1).
 
 
+Creating a new build
+====================
+After running "./osdk_build" to create a new 'tracker.tap'
+
+For the Atmos:
+--------------
+Create a new basic runner using: bas2tap -b2t0 atmosrun.bas BUILD/atmosrun.tap
+
+(Using Oricuron with ROM v1.1)
+Then load 'atmosrun.tap' into oricutron.
+
+Next load 'tracker.tap' into oricutron.
+
+Load up some demo music by loading 'DEMO.tap' into oricutron.
+
+Relocate the music data with 'CALL #291B'
+
+Now enter
+DOKE #9C, #3FFF
+CSAVE "FOURBAR", AUTO
+
+For the Oric1:
+--------------
+Create a new basic runner using: bas2tap -b2t0 oricrun.bas BUILD/oricrun.tap
+
+(Using Oricuron with ROM v1.1)
+Then load 'oricrun.tap' into oricutron.
+
+Next load 'tracker.tap' into oricutron.
+
+Load up some demo music by loading 'DEMO.tap' into oricutron.
+
+Relocate the music data with 'CALL #291B'
+
+Now enter
+DOKE #9C, #3FFF
+CSAVE "ORICTUNE", AUTO
+
+
+
+
+
+
+
+
+
 
 
 
