@@ -30,6 +30,19 @@ StartProg
     sta _tracker_bar_step_index
     jsr clearSound
 
+    ;// Setup song sequence
+    lda #0
+    sta barSequenceData
+    sta _tracker_song_bar_lookup_index;
+    lda #01
+    sta barSequenceData+1
+    lda #02
+    sta barSequenceData+2
+    lda #03
+    sta barSequenceData+3
+    lda #$ff
+    sta barSequenceData+4
+
     ; setup interrupt for playing back music
     jsr setupTrackerInterrupt
 

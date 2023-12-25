@@ -268,8 +268,31 @@ trackerInterrupt
     songMode
         // TODO - fetch next bar in sequence and set _tracker_step_index
         // If we've reached the last bar in the sequence then goto start
-        lda #0 ; go to beginning of song
+        inc _tracker_song_bar_lookup_index;
+        ldy _tracker_song_bar_lookup_index
+        lda barSequenceData,Y
+
+        cmp #$ff
+        bne nextSequenceBar
+        ;restart sequence
+        res
+        lda #0
+        sta _tracker_song_bar_lookup_index;
+        tay
+        lda trackerBarStartLookup,y
         sta _tracker_step_index
+        sta _tracker_bar_step_index;
+        lda _tracker_step_length            
+        sta _tracker_step_cycles_remaining
+        jmp continue
+
+        nextSequenceBar
+        ldy _tracker_song_bar_lookup_index
+        lda barSequenceData,Y
+        tay
+        lda trackerBarStartLookup,Y
+        sta _tracker_step_index
+        lda #0
         sta _tracker_bar_step_index
         lda _tracker_step_length
         sta _tracker_step_cycles_remaining        

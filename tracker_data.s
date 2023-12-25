@@ -306,5 +306,5 @@ barCopyBuffer
 .dsb 96,00
 
 barSequenceData
-.dsb 255,0
+.dsb 255,$ff
 
