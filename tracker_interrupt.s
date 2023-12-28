@@ -275,7 +275,6 @@ trackerInterrupt
         cmp #$ff
         bne nextSequenceBar
         ;restart sequence
-        res
         lda #0
         sta _tracker_song_bar_lookup_index;
         tay
@@ -287,8 +286,6 @@ trackerInterrupt
         jmp continue
 
         nextSequenceBar
-        ldy _tracker_song_bar_lookup_index
-        lda barSequenceData,Y
         tay
         lda trackerBarStartLookup,Y
         sta _tracker_step_index
