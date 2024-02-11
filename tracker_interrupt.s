@@ -75,16 +75,17 @@ trackerInterrupt
     jsr copySoundParams
 
 
-    ;clc
+    clc
     lda _tracker_step_cycles_remaining; Decremented each time the interrupt is called.
     cmp _tracker_step_length          ; Length of each note (speed of the tune).
     beq playNextStep                  ; If the above two values match then play the next note
     clc
+    
     cmp _tracker_step_half_length     ; check if we're halfway through a note
-    bne skipSilenceHalfNotes              ; and if so silence and half notes
+    beq doSilenceHalfNotes
+    jmp countDown          ; and if so silence and half notes
+    doSilenceHalfNotes
     jmp silenceHalfNotes
-    skipSilenceHalfNotes
-    jmp countDown                     ; otherwise continue to decrement _tracker_step_cycles_remaining
 
     ; Play the music for the current step
     playNextStep
@@ -242,9 +243,51 @@ trackerInterrupt
             sta PARAMS_7
             
             jsr independentMusic
+
+            jmp countDown
         .)
 
     :silenceHalfNotes
+    ldy #01 ; Load 2nd byte of line
+    lda (_playback_music_info_byte_addr),y
+    and #$80
+    beq silenceNote2
+    lda #01
+    sta PARAMS_1
+    lda #00
+    sta PARAMS_3
+    sta PARAMS_7
+    lda #01
+    sta PARAMS_5
+    jsr independentMusic
+
+    silenceNote2
+    ldy #03 ; Load 4th byte of line
+    lda (_playback_music_info_byte_addr),y
+    and #$80
+    beq silenceNote3
+    lda #02
+    sta PARAMS_1
+    lda #00
+    sta PARAMS_3
+    sta PARAMS_7
+    lda #01
+    sta PARAMS_5
+    jsr independentMusic
+
+    silenceNote3
+    ldy #05 ; Load 4th byte of line
+    lda (_playback_music_info_byte_addr),y
+    and #$80
+    beq countDown
+    lda #03
+    sta PARAMS_1
+    lda #00
+    sta PARAMS_3
+    sta PARAMS_7
+    lda #01
+    sta PARAMS_5
+    jsr independentMusic
 
 
     ; decrement the interval count to see if we've reached the next step
