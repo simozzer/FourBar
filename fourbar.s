@@ -1161,7 +1161,7 @@ processMinus
         sta _lo_nibble
 
         clc
-        cmp #0
+        cmp #1
         bne decrementVolChannel1
         jmp done
 
@@ -1249,7 +1249,7 @@ processMinus
         sta _lo_nibble
 
         clc
-        cmp #0
+        cmp #1
         bne decrementVolChannel2
         jmp done
 
@@ -1335,7 +1335,7 @@ processMinus
         sta _lo_nibble
 
         clc
-        cmp #0
+        cmp #1
         bne decrementVolChannel3
         jmp done
 
