@@ -1,4 +1,4 @@
-
+// TODO REFACTOR - extra all data into local variables
 
 ; >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ; printTrackerLineData: 
@@ -29,15 +29,17 @@ printTrackerLineData
     ldy #TRACKER_COL_NOTE_CH_1
     lda #ASCII_SPACE
     clearNoteLoop1
-    sta (_copy_mem_dest),Y
-    iny
-    cpy #19
-    bne clearNoteLoop1
+    .(
+        sta (_copy_mem_dest),Y
+        iny
+        cpy #19
+        bne clearNoteLoop1
+    .)
     jmp processNote2Data
 
 
     printNote1Data
-    tax ; make a copy of the value (the lower 4 bits will be used for note)
+    sta _music_data_temp ; make a copy of the value (the lower 4 bits will be used for note)
     ; get Part 1 Octave
     and #$F0
     lsr
@@ -45,14 +47,13 @@ printTrackerLineData
     lsr 
     lsr
     and #$0F
-    sta _music_octave
     ;convert octave to digit and print on screen
     adc #48
     ldy #TRACKER_COL_OCT_CH_1
     sta (_copy_mem_dest),y
 
     ; get Part 1 Note
-    txa
+    lda _music_data_temp
     and #$0F
     sta _music_note
     adc _music_note ;double the value to lookup string
@@ -74,7 +75,8 @@ printTrackerLineData
 
     ;get Part 1 Vol
     and #$0f
-    adc _music_data_temp
+    sta _music_vol
+    adc _music_vol
     tax
     lda numbersToDisplay,x
     ldy #TRACKER_COL_VOL_CH_1
@@ -84,6 +86,17 @@ printTrackerLineData
     iny
     sta (_copy_mem_dest),Y
 
+    ;get part 1 length
+    ldy #2
+    lda _music_data_temp
+    and #$80
+    bne showNote1Length
+    lda #ASCII_SPACE
+    sta (_copy_mem_dest),y
+    jmp processNote2Data
+    showNote1Length
+    lda #ASCII_MINUS
+    sta (_copy_mem_dest),y
 
     :processNote2Data
     // PRINT PART 2 INFO
@@ -95,15 +108,16 @@ printTrackerLineData
     ldy #TRACKER_COL_NOTE_CH_2
     lda #ASCII_SPACE
     clearNoteLoop2
-    sta (_copy_mem_dest),Y
-    iny
-    cpy #38
-    bne clearNoteLoop2
+    .(
+        sta (_copy_mem_dest),Y
+        iny
+        cpy #38
+        bne clearNoteLoop2
+    .)
     jmp processNote3Data
 
     printNote2Data
-    tax ; make a copy of the value (the lower 4 bits will be used for note)
-    txa
+    sta _music_data_temp ; make a copy of the value (the lower 4 bits will be used for note)
 
     ; get Part 2 Octave
     and #$F0
@@ -119,7 +133,7 @@ printTrackerLineData
     sta (_copy_mem_dest),y
 
     ; get Part 2 Note
-    txa
+    lda _music_data_temp
     and #$0F
     sta _music_note
     adc _music_note ;double the value to lookup string
@@ -140,7 +154,8 @@ printTrackerLineData
 
     ;get Part 2 Vol
     and #$0f  
-    adc _music_data_temp
+    sta _music_vol
+    adc _music_vol
     tax
     lda numbersToDisplay,x
     ldy #TRACKER_COL_VOL_CH_2
@@ -149,6 +164,18 @@ printTrackerLineData
     lda numbersToDisplay,x
     iny
     sta (_copy_mem_dest),Y
+
+    ;get Part 2 length
+    ldy #14
+    lda _music_data_temp
+    and #$80
+    bne showNote2Length
+    lda #ASCII_SPACE
+    sta (_copy_mem_dest),y
+    jmp processNote3Data
+    showNote2Length
+    lda #ASCII_MINUS
+    sta (_copy_mem_dest),y
 
 
     :processNote3Data
@@ -205,8 +232,9 @@ printTrackerLineData
     sta _music_data_temp ; make a copy of the value (the lower 4 bits will be used for volume)
 
     ;get Part 3 Vol
-    and #$0f  
-    adc _music_data_temp
+    and #$0F
+    sta _music_vol
+    adc _music_vol
     tax
     lda numbersToDisplay,x
     ldy #TRACKER_COL_VOL_CH_3
@@ -216,8 +244,19 @@ printTrackerLineData
     iny
     sta (_copy_mem_dest),Y
 
+    ;get Part 3 length
+    ldy #26
+    lda _music_data_temp
+    and #$80
+    bne showNote3Length
+    lda #ASCII_SPACE
+    sta (_copy_mem_dest),y
+    jmp notePrinted
+    showNote3Length
+    lda #ASCII_MINUS
+    sta (_copy_mem_dest),y
 
-
+    :notePrinted
     rts
 .)
 ; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  

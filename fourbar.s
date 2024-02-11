@@ -258,13 +258,20 @@ runTracker
 
     checkP
     cpx #KEY_P
-    bne loopAgain
+    bne checkT
     jsr clearTrackerInterupt
     jsr clearSound
     
     LDA #03// STORE value to tell BASIC to print data
     STA $8FFF
     RTS
+
+    checkT
+    cpx #KEY_T
+    bne loopAgain
+    jsr toggleShortNote
+    jmp refreshTrackerScreen
+
 
 
     :loopAgain
@@ -282,12 +289,15 @@ speedUp
 .(
     lda _tracker_step_length
     clc
-    cmp #01
+    cmp #05
     bne increaseSpeed
     rts
 
     increaseSpeed
     dec _tracker_step_length
+    lda _tracker_step_length
+    lsr
+    sta _tracker_step_half_length;
     rts
 .)
 ; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -304,6 +314,9 @@ slowDown
     cmp #20
     bpl done
     inc _tracker_step_length
+    lda _tracker_step_length
+    lsr
+    sta _tracker_step_half_length;
 
     :done
     rts
@@ -398,6 +411,99 @@ deleteLine
 ; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
+; >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+; toggleShortNote: 
+;   toggle the length of the currently selected note
+; ------------------------------------------------------------------------------ 
+toggleShortNote
+.(
+    clc
+    lda _tracker_selected_row_index
+    adc _first_visible_tracker_step_line
+    tay
+    lda trackerMusicDataLo,Y
+    sta _copy_note_lo
+    lda trackerMusicDataHi,y
+    sta _copy_note_hi
+
+    lda _tracker_selected_col_index
+    cmp #TRACKER_COL_INDEX_NOTE_CH1
+    bne nextCheck0
+
+    jmp toggleLengthNote1
+    nextCheck0
+        cmp #TRACKER_COL_INDEX_OCT_CH1
+        bne nextCheck2
+        jmp toggleLengthNote1
+    nextCheck2
+        cmp #TRACKER_COL_INDEX_VOL_CH1
+        bne nextCheck3
+        jmp toggleLengthNote1
+    nextCheck3
+        cmp #TRACKER_COL_INDEX_NOTE_CH2
+        bne nextCheck4
+        jmp toggleLengthNote2
+    nextCheck4    
+        cmp #TRACKER_COL_INDEX_OCT_CH2
+        bne nextCheck6
+        jmp toggleLengthNote2
+    nextCheck6
+        cmp #TRACKER_COL_INDEX_VOL_CH2
+        bne nextCheck7
+        jmp toggleLengthNote2
+    nextCheck7
+        cmp  #TRACKER_COL_INDEX_NOTE_CH3
+        bne nextCheck8
+        jmp toggleLengthNote3
+    nextCheck8
+        cmp #TRACKER_COL_INDEX_OCT_CH3
+        bne nextCheck9
+        jmp toggleLengthNote3
+    nextCheck9  
+        cmp #TRACKER_COL_INDEX_VOL_CH3
+        bne done
+        jmp toggleLengthNote3
+    done
+    rts
+
+    :toggleLengthNote1
+    .(
+        ldy #01
+        jmp toggleNoteLength
+    .)
+
+    :toggleLengthNote2
+    .(
+        ldy #03
+        jmp toggleNoteLength
+    .)
+
+    :toggleLengthNote3
+    .(
+        ldy #05
+        jmp toggleNoteLength
+    .)
+
+    :toggleNoteLength
+    .(
+        lda (_copy_note),Y
+        tax
+        and #$0f
+        sta _lo_nibble
+        txa
+        and #$f0
+        bne setShort
+        lda _lo_nibble
+        clc
+        adc #$80
+        jmp setData
+        setShort
+        lda _lo_nibble
+        :setData
+        sta (_copy_note),Y
+        rts
+    .)
+.)
 
 ; >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ; processCopyNote: 

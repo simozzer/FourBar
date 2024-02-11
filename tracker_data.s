@@ -10,22 +10,22 @@ trackerScreenData
 .byt PAPER_WHITE, INK_BLACK,  " BAR:1                                "
 .byt PAPER_WHITE, INK_BLACK,  " CHANNEL 1   CHANNEL 2   CHANNEL 3    "
 .byt PAPER_WHITE, INK_BLACK,  " NOT OCT VOL NOT OCT VOL NOT OCT VOL  "
-.byt PAPER_BLACK, INK_GREEN,  ">                                    <"
-.byt PAPER_BLACK, INK_BLUE,   "|                                     "
-.byt PAPER_BLACK, INK_BLUE,   "|                                     "
-.byt PAPER_BLACK, INK_BLUE,   "|                                     "
-.byt PAPER_BLACK, INK_GREEN,  ">                                    <"
-.byt PAPER_BLACK, INK_BLUE,   "|                                     "
-.byt PAPER_BLACK, INK_BLUE,   "|                                     "
-.byt PAPER_BLACK, INK_BLUE,   "|                                     "
-.byt PAPER_BLACK, INK_GREEN,  ">                                    <"
-.byt PAPER_BLACK, INK_BLUE,   "|                                     "
-.byt PAPER_BLACK, INK_BLUE,   "|                                     "
-.byt PAPER_BLACK, INK_BLUE,   "|                                     "
-.byt PAPER_BLACK, INK_GREEN,  ">                                    <"
-.byt PAPER_BLACK, INK_BLUE,   "|                                     "
-.byt PAPER_BLACK, INK_BLUE,   "|                                     "
-.byt PAPER_BLACK, INK_BLUE,   "|                                     "
+.byt PAPER_BLACK, INK_GREEN,  "                                      "
+.byt PAPER_BLACK, INK_BLUE,   "                                      "
+.byt PAPER_BLACK, INK_BLUE,   "                                      "
+.byt PAPER_BLACK, INK_BLUE,   "                                      "
+.byt PAPER_BLACK, INK_GREEN,  "                                      "
+.byt PAPER_BLACK, INK_BLUE,   "                                      "
+.byt PAPER_BLACK, INK_BLUE,   "                                      "
+.byt PAPER_BLACK, INK_BLUE,   "                                      "
+.byt PAPER_BLACK, INK_GREEN,  "                                      "
+.byt PAPER_BLACK, INK_BLUE,   "                                      "
+.byt PAPER_BLACK, INK_BLUE,   "                                      "
+.byt PAPER_BLACK, INK_BLUE,   "                                      "
+.byt PAPER_BLACK, INK_GREEN,  "                                      "
+.byt PAPER_BLACK, INK_BLUE,   "                                      "
+.byt PAPER_BLACK, INK_BLUE,   "                                      "
+.byt PAPER_BLACK, INK_BLUE,   "                                      "
 .byt PAPER_WHITE, INK_BLUE,   " Arrows to navigate. +/- Change value."
 .byt PAPER_WHITE, INK_BLUE,   " Speed: (S)lower, (F)aster.           "
 .byt PAPER_WHITE, INK_BLUE,   " Select Bar: 1,2,3,4,5,6,7,8.         "
@@ -33,7 +33,7 @@ trackerScreenData
 .byt PAPER_WHITE, INK_BLUE,   " Note: Z Copy, X Paste, (Del)ete.     "
 .byt PAPER_WHITE, INK_BLUE,   " Bar: B Copy, N Paste.                "
 .byt PAPER_WHITE, INK_BLUE,   " File: (L)oad s(A)ve (Q)uit.          "
-.byt PAPER_WHITE, INK_BLUE,   " Data: (P)rint bytes.                 "
+.byt PAPER_WHITE, INK_BLUE,   " Other: (T)oggle length.              "
 
 trackerScreenDataLo
     .byt <trackerScreenData + 0,<trackerScreenData + 40,<trackerScreenData + 80,<trackerScreenData + 120,<trackerScreenData + 160
@@ -57,13 +57,13 @@ trackerScreenDataHi
 trackerMusicData
 ;(oct/note)(vol/len)
 // bar 0
-.byt $21,$08,$3A,$08,$35,$08 // position 0
+.byt $21,$f8,$3A,$08,$35,$08 // position 0
 .byt $00,$00,$00,$00,$00,$00 // position 1
 .byt $00,$00,$00,$00,$00,$00 // position 2
-.byt $21,$06,$3A,$06,$35,$06 // position 3
+.byt $21,$06,$3A,$f6,$35,$06 // position 3
 .byt $00,$00,$00,$00,$00,$00 // position 4
 .byt $00,$00,$00,$00,$00,$00 // position 5
-.byt $21,$04,$3A,$04,$35,$04 // position 6
+.byt $21,$04,$3A,$04,$35,$f4 // position 6
 .byt $00,$00,$00,$00,$00,$00 // position 7
 .byt $00,$00,$00,$00,$00,$00 // position 9
 .byt $00,$00,$00,$00,$00,$00 // position 9
@@ -307,4 +307,5 @@ barCopyBuffer
 
 barSequenceData
 .dsb 255,$ff
+
 

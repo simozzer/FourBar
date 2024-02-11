@@ -9,6 +9,8 @@ setupTrackerInterrupt
     lda #TRACKER_STEP_LENGTH
     sta _tracker_step_cycles_remaining;    
     sta _tracker_step_length;
+    lsr
+    sta _tracker_step_half_length
   
     sei
 
@@ -77,6 +79,11 @@ trackerInterrupt
     lda _tracker_step_cycles_remaining; Decremented each time the interrupt is called.
     cmp _tracker_step_length          ; Length of each note (speed of the tune).
     beq playNextStep                  ; If the above two values match then play the next note
+    clc
+    cmp _tracker_step_half_length     ; check if we're halfway through a note
+    bne skipSilenceHalfNotes              ; and if so silence and half notes
+    jmp silenceHalfNotes
+    skipSilenceHalfNotes
     jmp countDown                     ; otherwise continue to decrement _tracker_step_cycles_remaining
 
     ; Play the music for the current step
@@ -236,6 +243,8 @@ trackerInterrupt
             
             jsr independentMusic
         .)
+
+    :silenceHalfNotes
 
 
     ; decrement the interval count to see if we've reached the next step
