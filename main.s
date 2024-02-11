@@ -1,4 +1,4 @@
-rts
+;todo rts
 
 StartProg
 ; >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -21,7 +21,7 @@ StartProg
 
 
     ;// Initialize data for the tracker
-    lda #TRACKER_PLAY_MODE_BAR
+    lda #TRACKER_PLAY_MODE_SONG
     sta _tracker_play_mode
     lda #16
     sta _tracker_last_step
@@ -40,8 +40,16 @@ StartProg
     sta barSequenceData+2
     lda #03
     sta barSequenceData+3
-    lda #$ff
+    lda #04
     sta barSequenceData+4
+    lda #05
+    sta barSequenceData+5
+    lda #06
+    sta barSequenceData+6
+    lda #07
+    sta barSequenceData+7
+    lda #$ff
+    sta barSequenceData+8
 
     ; setup interrupt for playing back music
     jsr setupTrackerInterrupt
