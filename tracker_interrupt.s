@@ -349,15 +349,13 @@ trackerInterrupt
         jmp continue
 
     nextTriggeredBar
-            ldy _tracker_bar_index
-            lda trackerBarStartLookup,Y
-            sta _tracker_step_index
-            lda _tracker_step_length
-            sta _tracker_step_cycles_remaining
-            lda #0
-            sta _tracker_bar_step_index
-
-
+        ldy _tracker_bar_index
+        lda trackerBarStartLookup,Y
+        sta _tracker_step_index
+        lda _tracker_step_length
+        sta _tracker_step_cycles_remaining
+        lda #0
+        sta _tracker_bar_step_index
 
     :continue
 

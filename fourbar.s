@@ -877,21 +877,24 @@ processPlus
         cmp #TRACKER_COL_INDEX_VOL_CH1
         bne nextCheck3
 
-        
         ldy #1
         lda (_copy_mem_src),y
-        and #$0f
+        tax
+        and #$F0
+        sta _hi_nibble
+        txa
+        and #$0f   
         clc
         cmp #15
         bcc incrementVolChannel1
         jmp done
 
-        incrementVolChannel1 // Add to oct value channel 1
+        incrementVolChannel1 // Add to vol value channel 1
+        clc
         adc #$01
+        adc _hi_nibble
         sta (_copy_mem_src),y
         rts
-
-
 
     nextCheck3
         cmp #TRACKER_COL_INDEX_NOTE_CH2
@@ -961,15 +964,20 @@ processPlus
 
         ldy #3
         lda (_copy_mem_src),y
-        and #$0f
+        tax
+        and #$F0
+        sta _hi_nibble
+        txa
+        and #$0f   
         clc
         cmp #15
         bcc incrementVolChannel2
         jmp done
 
-        incrementVolChannel2 // Add to oct value channel 2
+        incrementVolChannel2 // Add to vol value channel 2
         clc
         adc #$01
+        adc _hi_nibble
         sta (_copy_mem_src),y
         rts
 
@@ -1038,14 +1046,20 @@ processPlus
         bne done
         ldy #5
         lda (_copy_mem_src),y
-        and #$0f
+        tax
+        and #$F0
+        sta _hi_nibble
+        txa
+        and #$0f   
         clc
         cmp #15
         bcc incrementVolChannel3
         jmp done
 
-        incrementVolChannel3 // Add to oct value channel 1
+        incrementVolChannel3 // Add to vol value channel 3
+        clc
         adc #$01
+        adc _hi_nibble
         sta (_copy_mem_src),y
         rts
 
@@ -1139,14 +1153,22 @@ processMinus
         
         ldy #1
         lda (_copy_mem_src),y
+        tax
+        and #$F0
+        sta _hi_nibble
+        txa
         and #$0f
+        sta _lo_nibble
+
         clc
         cmp #0
         bne decrementVolChannel1
         jmp done
 
-        decrementVolChannel1 // Add to oct value channel 1
+        decrementVolChannel1 // Subtract from volume channel 1
+        clc
         sbc #01
+        adc _hi_nibble
         sta (_copy_mem_src),y
         rts
 
@@ -1217,16 +1239,24 @@ processMinus
         cmp #TRACKER_COL_INDEX_VOL_CH2
         bne nextCheck7
 
-        ldy #3
+        ldy #03
         lda (_copy_mem_src),y
+        tax
+        and #$F0
+        sta _hi_nibble
+        txa
         and #$0f
+        sta _lo_nibble
+
         clc
         cmp #0
         bne decrementVolChannel2
         jmp done
 
-        decrementVolChannel2 // Add to oct value channel 1
+        decrementVolChannel2 // Subtract from volume channel 2
+        clc
         sbc #01
+        adc _hi_nibble
         sta (_copy_mem_src),y
         rts
 
@@ -1297,14 +1327,22 @@ processMinus
 
         ldy #5
         lda (_copy_mem_src),y
+        tax
+        and #$F0
+        sta _hi_nibble
+        txa
         and #$0f
+        sta _lo_nibble
+
         clc
         cmp #0
         bne decrementVolChannel3
         jmp done
 
-        decrementVolChannel3 // Add to oct value channel 1
+        decrementVolChannel3 // Subtract from volume channel 3
+        clc
         sbc #01
+        adc _hi_nibble
         sta (_copy_mem_src),y
         rts
 
