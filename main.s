@@ -21,7 +21,7 @@ StartProg
 
 
     ;// Initialize data for the tracker
-    lda #TRACKER_PLAY_MODE_SONG
+    lda #TRACKER_PLAY_MODE_BAR
     sta _tracker_play_mode
     lda #16
     sta _tracker_last_step

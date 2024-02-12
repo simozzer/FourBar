@@ -62,7 +62,7 @@ runTracker
     cpx #KEY_RIGHT_ARROW
     bne checkLeft
     lda _tracker_selected_col_index
-    cmp #08
+    cmp #09
     bpl checkLeft
     inc _tracker_selected_col_index
     jmp refreshTrackerScreen
@@ -1043,7 +1043,7 @@ processPlus
 
     nextCheck9  
         cmp #TRACKER_COL_INDEX_VOL_CH3
-        bne done
+        bne nextCheck10
         ldy #5
         lda (_copy_mem_src),y
         tax
@@ -1063,7 +1063,38 @@ processPlus
         sta (_copy_mem_src),y
         rts
 
-    done
+    nextCheck10
+        cmp #TRACKER_COL_INDEX_NOISE_CH3
+        bne done
+        ldy #5
+        lda (_copy_mem_src),Y
+        and #$8f;  bitmask 0b10001111
+        sta _music_data_temp; store the result of the above bitmask (needed later to xor the result)
+        lda (_copy_mem_src),Y
+        and #$70 ; mask the 3 bits we're interested in
+        lsr
+        lsr
+        lsr
+        lsr 
+        and #07
+        sta _lo_nibble
+        clc
+        cmp #7
+        bcc incrementNoiseValue
+        jmp done
+
+        incrementNoiseValue
+        clc
+        adc #01
+        asl
+        asl
+        asl
+        asl
+        adc _music_data_temp
+        sta (_copy_mem_src),y
+        rts 
+
+    done 
     rts
 .)
 ; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< 
@@ -1323,7 +1354,7 @@ processMinus
         
     nextCheck9
         cmp #TRACKER_COL_INDEX_VOL_CH3
-        bne done
+        bne nextCheck10
 
         ldy #5
         lda (_copy_mem_src),y
@@ -1345,6 +1376,39 @@ processMinus
         adc _hi_nibble
         sta (_copy_mem_src),y
         rts
+
+    nextCheck10
+        cmp #TRACKER_COL_INDEX_NOISE_CH3
+        bne done
+        ldy #5
+        lda (_copy_mem_src),Y
+        and #$8f;  bitmask 0b10001111
+        sta _music_data_temp; store the result of the above bitmask (needed later to xor the result)
+        lda (_copy_mem_src),Y
+        and #$70 ; mask the 3 bits we're interested in
+        lsr
+        lsr
+        lsr
+        lsr 
+        and #07
+        sta _lo_nibble
+        clc
+        cmp #1
+        bne decrementNoiseValue
+        jmp done
+
+
+        decrementNoiseValue
+        sec
+        sbc #01
+        asl
+        asl
+        asl
+        asl
+        clc
+        adc _music_data_temp
+        sta (_copy_mem_src),y
+        rts 
 
     done
     rts

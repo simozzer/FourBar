@@ -23,6 +23,7 @@ _gKey .dsb 1
 _music_octave .dsb 1
 _music_note .dsb 1
 _music_vol .dsb 1
+_noise_pitch .dsb 1
 _music_data_temp .dsb 1
 _music_info_byte_addr
 _music_info_byte_lo .dsb 1

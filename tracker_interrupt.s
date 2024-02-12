@@ -217,7 +217,7 @@ trackerInterrupt
             lda #01
             sta PARAMS_5
             jsr independentMusic
-            jmp countDown
+            jmp playNoise
 
             playNote3
             tax ; store value to later extract octave
@@ -243,6 +243,31 @@ trackerInterrupt
             sta PARAMS_7
             
             jsr independentMusic
+
+        :playNoise
+            ldy #5 ;; load 2nd byte of line
+            lda (_playback_music_info_byte_addr),y    
+            and #$70
+            cmp #00
+            bne doNoise
+            jmp countDown
+            doNoise
+            lsr
+            lsr
+            lsr
+            lsr
+            tay
+
+            lda #06
+            sta PARAMS_1;
+            lda noisePitchLookup,Y
+            sta PARAMS_3
+            lda noiseVolumeLookup,Y
+            sta PARAMS_5
+            jsr independentSound
+
+
+
 
             jmp countDown
         .)
@@ -279,7 +304,7 @@ trackerInterrupt
     ldy #05 ; Load 4th byte of line
     lda (_playback_music_info_byte_addr),y
     and #$80
-    beq countDown
+    beq silenceNoise
     lda #03
     sta PARAMS_1
     lda #00
@@ -289,6 +314,13 @@ trackerInterrupt
     sta PARAMS_5
     jsr independentMusic
 
+    silenceNoise ; For now all noise bits will be silenced after half a note
+    lda #6
+    sta PARAMS_1
+    lda #0
+    sta PARAMS_3
+    sta PARAMS_5
+    jsr independentSound
 
     ; decrement the interval count to see if we've reached the next step
     :countDown
@@ -427,13 +459,21 @@ clearSound
         jsr independentMusic
 
     jsr WipeParams
+    lda #06
+    sta PARAMS_1
+    lda #0
+    sta PARAMS_3
+    sta PARAMS_5
+    jsr independentSound
+
+    jsr WipeParams
     lda #07
     sta PARAMS_1
-    lda #00
+    lda #04
     sta PARAMS_3
-    lda #01
+    lda #0
     sta PARAMS_5
-    lda #100
+    lda #0
     sta PARAMS_7
     ; call play
     JSR independentPlay

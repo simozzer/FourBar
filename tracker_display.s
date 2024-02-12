@@ -192,7 +192,7 @@ printTrackerLineData
     iny
     cpy #38
     bne clearNoteLoop3
-    rts
+    jmp showNoise
 
     printNote3Data
     tax ; make a copy of the value (the lower 4 bits will be used for note)
@@ -211,7 +211,7 @@ printTrackerLineData
     ldy #TRACKER_COL_OCT_CH_3
     sta (_copy_mem_dest),y
 
-    ; get Part 2 Note
+    ; get Part 3 Note
     txa
     and #$0F
     sta _music_note
@@ -245,15 +245,38 @@ printTrackerLineData
     sta (_copy_mem_dest),Y
 
     ;get Part 3 length
-    ldy #26
     lda _music_data_temp
     and #$80
+    ldy #26
     bne showNote3Length
+    
     lda #ASCII_SPACE
     sta (_copy_mem_dest),y
-    jmp notePrinted
+    jmp showNoise
     showNote3Length
     lda #ASCII_MINUS
+    sta (_copy_mem_dest),y
+
+    :showNoise
+    ldy #05
+    ;get Second Music Info Byte
+    lda (_music_info_byte_addr),y 
+    and #$70
+    bne displayNoiseValue
+    
+    lda #ASCII_SPACE
+    ldy #TRACKER_COL_NOISE_CH_3
+    sta (_copy_mem_dest),y
+    iny
+    sta (_copy_mem_dest),y
+    jmp notePrinted
+    displayNoiseValue
+    lsr
+    lsr
+    lsr
+    lsr
+    adc #$30
+    ldy #TRACKER_COL_NOISE_CH_3
     sta (_copy_mem_dest),y
 
     :notePrinted
@@ -345,12 +368,18 @@ printTrackerScreen
     tay
     lda #PAPER_WHITE
     sta (_copy_mem_dest),Y
+
+    lda _tracker_selected_col_index ; skip adding the black attribute if this is the last column
+    cmp #TRACKER_COL_INDEX_NOISE_CH3
+    bpl done
+
     lda #PAPER_BLACK
     iny 
     iny 
     iny
     sta (_copy_mem_dest),Y
     
+    done
     rts
 .)
 ; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  
