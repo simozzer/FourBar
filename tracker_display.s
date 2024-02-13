@@ -245,11 +245,13 @@ printTrackerLineData
     sta (_copy_mem_dest),Y
 
     ;get Part 3 length
+    ldy #26 
     lda _music_data_temp
     and #$80
-    ldy #26
-    bne showNote3Length
+    cmp #$80
+    beq showNote3Length
     
+
     lda #ASCII_SPACE
     sta (_copy_mem_dest),y
     jmp showNoise
