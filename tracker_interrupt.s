@@ -266,6 +266,15 @@ trackerInterrupt
             sta PARAMS_5
             jsr independentSound
 
+            lda #7
+            sta PARAMS_1
+            lda #4
+            sta PARAMS_3
+            lda #0
+            sta PARAMS_5
+            sta PARAMS_7
+            jsr independentPlay
+
 
 
 
@@ -321,6 +330,14 @@ trackerInterrupt
     sta PARAMS_3
     sta PARAMS_5
     jsr independentSound
+
+    lda #7
+    sta PARAMS_1
+    lda #0
+    sta PARAMS_3
+    sta PARAMS_5
+    sta PARAMS_7
+    jsr independentPlay
 
     ; decrement the interval count to see if we've reached the next step
     :countDown
