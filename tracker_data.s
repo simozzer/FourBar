@@ -147,7 +147,7 @@ noisePitchLookup
 .byt 4,8,12,16,20,24,28
 
 noiseVolumeLookup
-.byt 8,5,10,12,10,8,8
+.byt 8,8,8,8,8,8,8
 
 
 
