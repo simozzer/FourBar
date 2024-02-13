@@ -312,6 +312,7 @@ trackerInterrupt
     silenceNote3
     ldy #05 ; Load 4th byte of line
     lda (_playback_music_info_byte_addr),y
+    clc
     and #$80
     beq silenceNoise
     lda #03
@@ -323,14 +324,7 @@ trackerInterrupt
     sta PARAMS_5
     jsr independentMusic
 
-    silenceNoise ; For now all noise bits will be silenced after half a note
-    lda #6
-    sta PARAMS_1
-    lda #0
-    sta PARAMS_3
-    sta PARAMS_5
-    jsr independentSound
-
+    silenceNoise ; sall noise bits will be silenced after half a note
     lda #7
     sta PARAMS_1
     lda #0

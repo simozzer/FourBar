@@ -487,21 +487,8 @@ toggleShortNote
     :toggleNoteLength
     .(
         lda (_copy_note),Y
-        tax
-        and #$0f
-        sta _lo_nibble
-        txa
-        and #$f0
-        bne setShort
-        lda _lo_nibble
-        clc
-        adc #$80
-        jmp setData
-        setShort
-        lda _lo_nibble
-        :setData
+        eor #$80
         sta (_copy_note),Y
-        rts
     .)
 .)
 
@@ -1506,12 +1493,19 @@ processDeleteNote
         rts     
     nextCheck9
         cmp #TRACKER_COL_INDEX_VOL_CH3
-        bne done
+        bne nextCheck10
 
         ldy #4
         lda #0
         sta (_copy_mem_src),y
         rts     
+    nextCheck10
+        cmp #TRACKER_COL_INDEX_NOISE_CH3
+        bne done
+        ldy #5
+        lda (_copy_mem_src),Y
+        and #$8F
+        sta (_copy_mem_src),y
 
     done
         rts
