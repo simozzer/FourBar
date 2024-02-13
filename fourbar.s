@@ -268,11 +268,15 @@ runTracker
 
     checkT
     cpx #KEY_T
-    bne loopAgain
+    bne checkM
     jsr toggleShortNote
     jmp refreshTrackerScreen
 
 
+    checkM
+    cpx #KEY_M
+    bne loopAgain
+    jsr toggleSongBarMode
 
     :loopAgain
     jmp readAgain
@@ -1610,6 +1614,26 @@ copyMusicFromLoadBuffer
     lda #$03
     sta _copy_mem_count_hi
     jsr CopyMemory
+    rts
+.)
+; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< 
+
+
+; >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+; toggleSongBarMode: 
+;   toggle between song and bar mode
+; ------------------------------------------------------------------------------
+toggleSongBarMode 
+.(
+    lda _tracker_play_mode
+    cmp #TRACKER_PLAY_MODE_SONG
+    beq toggleToBarMode
+    lda #TRACKER_PLAY_MODE_SONG
+    sta _tracker_play_mode
+    rts
+    toggleToBarMode
+    lda #TRACKER_PLAY_MODE_BAR
+    sta _tracker_play_mode
     rts
 .)
 ; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< 

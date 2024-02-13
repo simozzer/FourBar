@@ -32,7 +32,7 @@ trackerScreenData
 .byt PAPER_WHITE, INK_BLUE,   "Bar: B Copy, N Paste.                 "
 .byt PAPER_WHITE, INK_BLUE,   "File: (L)oad s(A)ve (Q)uit.           "
 .byt PAPER_WHITE, INK_BLUE,   "Other: (T)oggle length.               "
-.byt PAPER_WHITE, INK_BLUE,   "                                      "
+.byt PAPER_WHITE, INK_BLUE,   "(M)ode bar/song                       "
 
 trackerScreenDataLo
     .byt <trackerScreenData + 0,<trackerScreenData + 40,<trackerScreenData + 80,<trackerScreenData + 120,<trackerScreenData + 160
