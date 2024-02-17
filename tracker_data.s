@@ -141,7 +141,7 @@ soundParamCopyBuffer
 .byt 00,00,00,00,00,00,00,00,00
 
 barSequenceData
-.dsb 255,$ff
+.byt 00,01,02,03,04,05,06,07,$ff
 
 noisePitchLookup
 .byt 4,8,12,16,20,24,28

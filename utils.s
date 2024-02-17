@@ -112,7 +112,6 @@ copyZeroPage
     lda 0,y
     :storeByte
     sta $ffff,y
-    clc
     iny
     cpy #$ff
     bcs loop
@@ -130,7 +129,6 @@ restoreZeroPage
     :readCopyByte
     lda $ffff,y
     sta 0,y
-    clc
     iny
     cpy #$ff
     bcs loop
@@ -149,7 +147,6 @@ copyRuntimeVariables
     lda $200,y
     :storeByte
     sta $ffff,y
-    clc
     iny
     cpy #$ff
     bcs loop
@@ -167,7 +164,6 @@ restoreRuntimeVariables
     :readCopyByte
     lda $ffff,y
     sta $200,y
-    clc
     iny
     cpy #$ff
     bcs loop
