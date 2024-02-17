@@ -22,7 +22,6 @@ printTrackerLineData
     // PRINT PART 1 INFO
     ldy #0 ; Load 1st byte of line
     lda (_music_info_byte_addr),y
-    cmp #00
     bne printNote1Data
 
     // printEmptyNote1
@@ -102,7 +101,6 @@ printTrackerLineData
     // PRINT PART 2 INFO
     ldy #02 
     lda (_music_info_byte_addr),y
-    cmp #00
     bne printNote2Data
     
     ldy #TRACKER_COL_NOTE_CH_2
@@ -182,7 +180,6 @@ printTrackerLineData
     // PRINT PART 3 INFO
     ldy #04 
     lda (_music_info_byte_addr),y
-    cmp #00
     bne printNote3Data
     
     ldy #TRACKER_COL_NOTE_CH_3
